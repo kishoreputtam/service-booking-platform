@@ -1,0 +1,146 @@
+{% extends "electrician.html" %}
+
+{% block title %}
+<title>Home Security Services</title>
+{% endblock %}
+
+{% block sidebar %}
+<div class="sidebar">
+    <h4>HOME SECURITY</h4>
+
+    <div class="service-nav-list">
+      <div class="cat service-nav-item active" onclick="filter('basic', event)">
+        <img src="{{ url_for('static', filename='images/services/door_lock.svg') }}" alt="Basic security installation">
+        <span>Basic security installation</span>
+      </div>
+      <div class="cat service-nav-item" onclick="filter('surveillance', event)">
+        <img src="{{ url_for('static', filename='images/services/surveillance_card.svg') }}" alt="Surveillance systems">
+        <span>Surveillance Systems</span>
+      </div>
+      <div class="cat service-nav-item" onclick="filter('advanced', event)">
+        <img src="{{ url_for('static', filename='images/services/biometric_lock.svg') }}" alt="Advanced security">
+        <span>Advanced Security</span>
+      </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="cardparent">
+      <div class="card" data-cat="basic">
+        <div>
+          <h3>Door lock installation / replacement</h3>
+          <p> 4.8 (49K reviews)</p>
+          <p class="price">₹399</p>
+        </div>
+        <div class="imgbox">
+          <img src="{{ url_for('static', filename='images/services/door_lock.svg') }}" alt="Door lock installation and replacement">
+          <button>Add +</button>
+        </div>
+      </div>
+
+      <div class="card" data-cat="basic">
+        <div>
+          <h3>Smart lock setup</h3>
+          <p> 4.6 (9K reviews)</p>
+          <p class="price">₹469</p>
+        </div>
+        <div class="imgbox">
+          <img src="{{ url_for('static', filename='images/services/biometric_lock.svg') }}" alt="Smart lock setup">
+          <button>Add +</button>
+        </div>
+      </div>
+
+
+      <div class="card" data-cat="basic">
+        <div>
+          <h3>Door latch & bolt fixing</h3>
+          <p>4.9 (80K reviews)</p>
+          <p class="price">₹299</p>
+        </div>
+        <div class="imgbox">
+          <img src="{{ url_for('static', filename='images/services/door_lock.svg') }}" alt="Door latch and bolt fixing">
+          <button class="add-btn" onclick="addItem(this)">Add + </button>
+
+          <div class="qty-control">
+            <button onclick="decrease(this)">-</button>
+            <span>1</span>
+            <button onclick="increase(this)">+</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="card" data-cat="surveillance">
+      <div>
+        <h3>CCTV camera installation</h3>
+        <p> 4.8 (12K reviews)</p>
+        <p class="price">₹499</p>
+      </div>
+      <div class="imgbox">
+        <img src="{{ url_for('static', filename='images/services/surveillance_card.svg') }}" alt="CCTV camera installation">
+        <button>Add +</button>
+      </div>
+    </div>
+
+    <div class="card" data-cat="surveillance">
+      <div>
+        <h3>Wireless camera setup</h3>
+        <p>4.7 (8K reviews)</p>
+        <p class="price">₹649</p>
+      </div>
+      <div class="imgbox">
+        <img src="{{ url_for('static', filename='images/services/surveillance_card.svg') }}" alt="Wireless camera setup">
+        <button>Add +</button>
+      </div>
+    </div>
+
+    <div class="card" data-cat="surveillance">
+      <div>
+        <h3>Camera repair & maintenance</h3>
+        <p> 4.6 (10K reviews)</p>
+        <p class="price">₹449</p>
+      </div>
+      <div class="imgbox">
+        <img src="{{ url_for('static', filename='images/services/surveillance_card.svg') }}" alt="Camera repair and maintenance">
+        <button>Add +</button>
+      </div>
+    </div>
+
+    <div class="card" data-cat="advanced">
+      <div>
+        <h3>Biometric lock installation</h3>
+        <p> 4.7 (41K reviews)</p>
+        <p class="price">₹399</p>
+      </div>
+      <div class="imgbox">
+        <img src="{{ url_for('static', filename='images/services/biometric_lock.svg') }}" alt="Biometric lock installation">
+        <button>Add +</button>
+      </div>
+    </div>
+
+    <div class="card" data-cat="advanced">
+      <div>
+        <h3>Access control systems</h3>
+        <p> 4.6 (35K reviews)</p>
+        <p class="price">₹599</p>
+      </div>
+      <div class="imgbox">
+        <img src="{{ url_for('static', filename='images/services/biometric_lock.svg') }}" alt="Access control systems">
+        <button>Add +</button>
+      </div>
+    </div>
+
+    <div class="card" data-cat="advanced">
+      <div>
+        <h3>Remote monitoring setup</h3>
+        <p> 4.8 (31K reviews)</p>
+        <p class="price">₹649</p>
+      </div>
+      <div class="imgbox">
+        <img src="{{ url_for('static', filename='images/services/cctv.svg') }}" alt="Remote monitoring setup">
+        <button>Add +</button>
+      </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,145 @@
+{% extends "electrician.html" %}
+
+{% block title %}
+<title>Interior & Furniture Services</title>
+{% endblock %}
+
+
+{% block sidebar %}
+<div class="sidebar">
+    <h3>INTERIOR</h3>
+
+    <div class="service-nav-list">
+      <div class="cat service-nav-item active" onclick="filter('assembly', event)">
+        <img src="{{ url_for('static', filename='images/services/wardrobe_card.svg') }}" alt="Furniture assembly">
+        <span>Furniture Assembly</span>
+      </div>
+      <div class="cat service-nav-item" onclick="filter('repiar', event)">
+        <img src="{{ url_for('static', filename='images/services/chair_repair.svg') }}" alt="Furniture repair">
+        <span>Furniture Repair</span>
+      </div>
+      <div class="cat service-nav-item" onclick="filter('interiors', event)">
+        <img src="{{ url_for('static', filename='images/services/tv_unit_installation_card.svg') }}" alt="Interior enhancement">
+        <span>Interior Enhancement</span>
+      </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block content %}
+      <div class="card" data-cat="assembly">
+        <div>
+          <h3>Bed assembly</h3>
+          <p> 4.79 (57K reviews)</p>
+          <p class="price">Starts at ₹799</p>
+        </div>
+        <div class="imgbox">
+          <img src="{{ url_for('static', filename='images/services/bed_assembly.svg') }}" alt="Bed assembly">
+          <button>Add +</button>
+        </div>
+      </div>
+
+      <div class="card" data-cat="assembly">
+        <div>
+          <h3>Wardrobe assembly</h3>
+          <p> 4.7 (10K reviews)</p>
+          <p class="price">₹599</p>
+        </div>
+        <div class="imgbox">
+          <img src="{{ url_for('static', filename='images/services/wardrobe_card.svg') }}" alt="Wardrobe assembly">
+          <button>Add +</button>
+        </div>
+      </div>
+
+
+      <div class="card" data-cat="assembly">
+        <div>
+          <h3>Modular furniture setup</h3>
+          <p>4.77 (61K reviews)</p>
+          <p class="price">₹999</p>
+        </div>
+        <div class="imgbox">
+          <img src="{{ url_for('static', filename='images/services/bed_assembly.svg') }}" alt="Modular furniture setup">
+          <button class="add-btn" onclick="addItem(this)">Add + </button>
+
+          <div class="qty-control">
+            <button onclick="decrease(this)">-</button>
+            <span>1</span>
+            <button onclick="increase(this)">+</button>
+          </div>
+        </div>
+
+      </div>
+
+    <div class="card" data-cat="repiar">
+      <div>
+        <h3>Broken chair repair</h3>
+        <p> 4.4 (9K reviews)</p>
+        <p class="price">₹299</p>
+      </div>
+      <div class="imgbox">
+        <img src="{{ url_for('static', filename='images/services/chair_repair.svg') }}" alt="Broken chair repair">
+        <button>Add +</button>
+      </div>
+    </div>
+
+    <div class="card" data-cat="repiar">
+      <div>
+        <h3>Door hinge fixing</h3>
+        <p>4.5 (17K reviews)</p>
+        <p class="price">₹299</p>
+      </div>
+      <div class="imgbox">
+        <img src="{{ url_for('static', filename='images/services/chair_repair.svg') }}" alt="Door hinge fixing">
+        <button>Add +</button>
+      </div>
+    </div>
+
+    <div class="card" data-cat="repiar">
+      <div>
+        <h3>Wood polishing</h3>
+        <p> 4.6 (11K reviews)</p>
+        <p class="price">₹499</p>
+      </div>
+      <div class="imgbox">
+        <img src="{{ url_for('static', filename='images/services/chair_repair.svg') }}" alt="Wood polishing">
+        <button>Add +</button>
+      </div>
+    </div>
+
+    <div class="card" data-cat="interiors">
+      <div>
+        <h3>Wallpaper installation</h3>
+        <p> 4.7 (22K reviews)</p>
+        <p class="price">₹599</p>
+      </div>
+      <div class="imgbox">
+        <img src="{{ url_for('static', filename='images/services/wallpaper_installation_card.svg') }}" alt="Wallpaper installation">
+        <button>Add +</button>
+      </div>
+    </div>
+
+    <div class="card" data-cat="interiors">
+      <div>
+        <h3>Wall panel setup</h3>
+        <p> 4.6 (41K reviews)</p>
+        <p class="price">₹499</p>
+      </div>
+      <div class="imgbox">
+        <img src="{{ url_for('static', filename='images/services/wall_panel_card.svg') }}" alt="Wall panel setup">
+        <button>Add +</button>
+      </div>
+    </div>
+
+    <div class="card" data-cat="interiors">
+      <div>
+        <h3>TV unit installation</h3>
+        <p> 4.8 (31K reviews)</p>
+        <p class="price">₹799</p>
+      </div>
+      <div class="imgbox">
+        <img src="{{ url_for('static', filename='images/services/tv_unit_installation_card.svg') }}" alt="TV unit installation">
+        <button>Add +</button>
+      </div>
+    </div>
+{% endblock %}

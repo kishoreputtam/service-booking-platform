@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+{% block title %}
+<title>Electrical Services</title>
+{% endblock %}
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+<link href="{{url_for('static',filename='css/style2.css')}}" rel="stylesheet">
+
+
+</head>
+
+<body data-service-page="{{ request.endpoint or 'service' }}">
+
+<div class="page">
+
+  <!-- LEFT -->
+   {% block sidebar %}
+  <div class="sidebar">
+    <h3>ELECTRICAL REPAIRS</h3>
+
+    <div class="service-nav-list">
+      <div class="cat service-nav-item active" onclick="filter('fan', event)">
+        <img src="{{ url_for('static', filename='images/services/ceiling_fan_installation.svg') }}" alt="Fan">
+        <span>Fan</span>
+      </div>
+      <div class="cat service-nav-item" onclick="filter('light', event)">
+        <img src="{{ url_for('static', filename='images/services/bulb_installation.svg') }}" alt="Light">
+        <span>Light</span>
+      </div>
+      <div class="cat service-nav-item" onclick="filter('wiring', event)">
+        <img src="{{ url_for('static', filename='images/services/internal_wiring.svg') }}" alt="Wiring">
+        <span>Wiring</span>
+      </div>
+    </div>
+  </div>
+  {% endblock %}
+
+  <!-- RIGHT -->
+  <div class="content">
+    <div class="content-toolbar">
+      <a href="{{ url_for('index') }}" class="service-cart-link service-back-link">
+        <span class="service-cart-icon-wrap">
+          <span class="service-cart-icon">←</span>
+        </span>
+        <span>Back</span>
+      </a>
+
+      <a href="/cart" class="service-cart-link" id="serviceCartLink">
+        <span class="service-cart-icon-wrap">
+          <span class="service-cart-icon">🛒</span>
+          <span class="service-cart-count" id="serviceCartCount">1+</span>
+        </span>
+        <span>View Cart</span>
+      </a>
+    </div>
+
+    <!-- HERO -->
+    <div class="hero">
+      <div class="hero-text">
+        <span class="tag">Super saver</span>
+        <h1>Affordable repairs starting at ₹79</h1>
+      </div>
+      <img src="{{ url_for('static', filename='images/services/service_banner.svg') }}" alt="Service banner">
+    </div>
+
+    <!-- TITLE -->
+     <div class="line">
+      <h3 id="title">Select a service</h3>
+      <hr>
+     </div>
+
+    <!-- SERVICES -->
+
+    <!-- FAN -->
+     {% block content %}
+<div class="cardparent">
+
+<!-- FAN -->
+<div class="card" data-cat="fan">
+  <div>
+    <h3>Ceiling fan installation</h3>
+    <p>4.8 (40K reviews)</p>
+    <p class="price">Starts at ₹99</p>
+  </div>
+  <div class="imgbox">
+    <img src="{{ url_for('static', filename='images/services/ceiling_fan_installation.svg') }}" alt="Ceiling fan installation">
+    <button class="add-btn" onclick="addItem(this)"
+      data-cat="fan" data-name="Ceiling fan installation" data-price="99">Add +</button>
+    <div class="qty-control" style="display:none;">
+      <button onclick="decrease(this)">-</button>
+      <span>1</span>
+      <button onclick="increase(this)">+</button>
+    </div>
+  </div>
+</div>
+
+<div class="card" data-cat="fan">
+  <div>
+    <h3>Fan repair</h3>
+    <p>4.7 (30K reviews)</p>
+    <p class="price">₹149</p>
+  </div>
+  <div class="imgbox">
+    <img src="{{ url_for('static', filename='images/services/fan_repair.svg') }}" alt="Fan repair">
+    <button class="add-btn" onclick="addItem(this)"
+      data-cat="fan" data-name="Fan repair" data-price="149">Add +</button>
+    <div class="qty-control" style="display:none;">
+      <button onclick="decrease(this)">-</button>
+      <span>1</span>
+      <button onclick="increase(this)">+</button>
+    </div>
+  </div>
+</div>
+
+<div class="card" data-cat="fan">
+  <div>
+    <h3>Exhaust fan installation</h3>
+    <p>4.6 (20K reviews)</p>
+    <p class="price">₹99</p>
+  </div>
+  <div class="imgbox">
+    <img src="{{ url_for('static', filename='images/services/exhaust_fan_product.svg') }}" alt="Exhaust fan installation">
+    <button class="add-btn" onclick="addItem(this)"
+      data-cat="fan" data-name="Exhaust fan installation" data-price="99">Add +</button>
+    <div class="qty-control" style="display:none;">
+      <button onclick="decrease(this)">-</button>
+      <span>1</span>
+      <button onclick="increase(this)">+</button>
+    </div>
+  </div>
+</div>
+
+<!-- LIGHT -->
+<div class="card" data-cat="light">
+  <div>
+    <h3>Tubelight repair</h3>
+    <p>4.8 (30K reviews)</p>
+    <p class="price">₹99</p>
+  </div>
+  <div class="imgbox">
+    <img src="{{ url_for('static', filename='images/services/tubelight_card.svg') }}" alt="Tubelight repair">
+    <button class="add-btn" onclick="addItem(this)"
+      data-cat="light" data-name="Tubelight repair" data-price="99">Add +</button>
+    <div class="qty-control" style="display:none;">
+      <button onclick="decrease(this)">-</button>
+      <span>1</span>
+      <button onclick="increase(this)">+</button>
+    </div>
+  </div>
+</div>
+
+<div class="card" data-cat="light">
+  <div>
+    <h3>Bulb installation</h3>
+    <p>4.7 (19K reviews)</p>
+    <p class="price">₹49</p>
+  </div>
+  <div class="imgbox">
+    <img src="{{ url_for('static', filename='images/services/bulb_installation.svg') }}" alt="Bulb installation">
+    <button class="add-btn" onclick="addItem(this)"
+      data-cat="light" data-name="Bulb installation" data-price="49">Add +</button>
+    <div class="qty-control" style="display:none;">
+      <button onclick="decrease(this)">-</button>
+      <span>1</span>
+      <button onclick="increase(this)">+</button>
+    </div>
+  </div>
+</div>
+
+<div class="card" data-cat="light">
+  <div>
+    <h3>Chandelier installation</h3>
+    <p>4.6 (27K reviews)</p>
+    <p class="price">₹499</p>
+  </div>
+  <div class="imgbox">
+    <img src="{{ url_for('static', filename='images/services/chandelier_installation.svg') }}" alt="Chandelier installation">
+    <button class="add-btn" onclick="addItem(this)"
+      data-cat="light" data-name="Chandelier installation" data-price="499">Add +</button>
+    <div class="qty-control" style="display:none;">
+      <button onclick="decrease(this)">-</button>
+      <span>1</span>
+      <button onclick="increase(this)">+</button>
+    </div>
+  </div>
+</div>
+
+<!-- WIRING -->
+<div class="card" data-cat="wiring">
+  <div>
+    <h3>Internal wiring</h3>
+    <p>4.7 (19K reviews)</p>
+    <p class="price">₹199</p>
+  </div>
+  <div class="imgbox">
+    <img src="{{ url_for('static', filename='images/services/internal_wiring.svg') }}" alt="Internal wiring">
+    <button class="add-btn" onclick="addItem(this)"
+      data-cat="wiring" data-name="Internal wiring" data-price="199">Add +</button>
+    <div class="qty-control" style="display:none;">
+      <button onclick="decrease(this)">-</button>
+      <span>1</span>
+      <button onclick="increase(this)">+</button>
+    </div>
+  </div>
+</div>
+
+<div class="card" data-cat="wiring">
+  <div>
+    <h3>External wiring</h3>
+    <p>4.6 (69K reviews)</p>
+    <p class="price">₹119</p>
+  </div>
+  <div class="imgbox">
+    <img src="{{ url_for('static', filename='images/services/external_wiring.svg') }}" alt="External wiring">
+    <button class="add-btn" onclick="addItem(this)"
+      data-cat="wiring" data-name="External wiring" data-price="119">Add +</button>
+    <div class="qty-control" style="display:none;">
+      <button onclick="decrease(this)">-</button>
+      <span>1</span>
+      <button onclick="increase(this)">+</button>
+    </div>
+  </div>
+</div>
+
+<div class="card" data-cat="wiring">
+  <div>
+    <h3>Switch replacement</h3>
+    <p>4.8 (8K reviews)</p>
+    <p class="price">₹79</p>
+  </div>
+  <div class="imgbox">
+    <img src="{{ url_for('static', filename='images/services/switch_replacement.svg') }}" alt="Switch replacement">
+    <button class="add-btn" onclick="addItem(this)"
+      data-cat="wiring" data-name="Switch replacement" data-price="79">Add +</button>
+    <div class="qty-control" style="display:none;">
+      <button onclick="decrease(this)">-</button>
+      <span>1</span>
+      <button onclick="increase(this)">+</button>
+    </div>
+  </div>
+</div>
+
+</div>
+{% endblock %}
+</div>
+</div>
+<script src="{{url_for('static',filename='js/script2.js')}}" type="text/javascript"></script>
+</body>
+</html>

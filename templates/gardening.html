@@ -1,0 +1,145 @@
+{% extends "electrician.html" %}
+
+{% block title %}
+<title>Gardening Services</title>
+{% endblock %}
+
+
+{% block sidebar %}
+<div class="sidebar">
+    <h3>GARDENING</h3>
+
+    <div class="service-nav-list">
+      <div class="cat service-nav-item active" onclick="filter('plant', event)">
+        <img src="{{ url_for('static', filename='images/services/plant_care.svg') }}" alt="Plant care and maintenance">
+        <span>Plant Care & Maintenance</span>
+      </div>
+      <div class="cat service-nav-item" onclick="filter('lawn', event)">
+        <img src="{{ url_for('static', filename='images/services/lawn_card.svg') }}" alt="Lawn care">
+        <span>Lawn Care</span>
+      </div>
+      <div class="cat service-nav-item" onclick="filter('setup', event)">
+        <img src="{{ url_for('static', filename='images/services/garden_card.svg') }}" alt="Garden setup">
+        <span>Garden Setup</span>
+      </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block content %}
+      <div class="card" data-cat="plant">
+        <div>
+          <h3>Plant watering service</h3>
+          <p> 4.9 (99K reviews)</p>
+          <p class="price">Starts at ₹99</p>
+        </div>
+        <div class="imgbox">
+          <img src="{{ url_for('static', filename='images/services/plant_care.svg') }}" alt="Plant watering service">
+          <button>Add +</button>
+        </div>
+      </div>
+
+      <div class="card" data-cat="plant">
+        <div>
+          <h3>Pruning & trimming</h3>
+          <p> 4.7 (20K reviews)</p>
+          <p class="price">₹119</p>
+        </div>
+        <div class="imgbox">
+          <img src="{{ url_for('static', filename='images/services/plant_care.svg') }}" alt="Pruning and trimming">
+          <button>Add +</button>
+        </div>
+      </div>
+
+
+      <div class="card" data-cat="plant">
+        <div>
+          <h3>Pest control for plants</h3>
+          <p>4.6 (61K reviews)</p>
+          <p class="price">₹149</p>
+        </div>
+        <div class="imgbox">
+          <img src="{{ url_for('static', filename='images/services/plant_care.svg') }}" alt="Pest control for plants">
+          <button class="add-btn" onclick="addItem(this)">Add + </button>
+
+          <div class="qty-control">
+            <button onclick="decrease(this)">-</button>
+            <span>1</span>
+            <button onclick="increase(this)">+</button>
+          </div>
+        </div>
+
+      </div>
+
+    <div class="card" data-cat="lawn">
+      <div>
+        <h3>Grass cutting</h3>
+        <p> 4.8 (19K reviews)</p>
+        <p class="price">₹99</p>
+      </div>
+      <div class="imgbox">
+        <img src="{{ url_for('static', filename='images/services/lawn_card.svg') }}" alt="Grass cutting">
+        <button>Add +</button>
+      </div>
+    </div>
+
+    <div class="card" data-cat="lawn">
+      <div>
+        <h3>Weed removal</h3>
+        <p>4.9 (56K reviews)</p>
+        <p class="price">₹109</p>
+      </div>
+      <div class="imgbox">
+        <img src="{{ url_for('static', filename='images/services/lawn_card.svg') }}" alt="Weed removal">
+        <button>Add +</button>
+      </div>
+    </div>
+
+    <div class="card" data-cat="lawn">
+      <div>
+        <h3>Soil leveling</h3>
+        <p> 4.8 (63K reviews)</p>
+        <p class="price">₹199</p>
+      </div>
+      <div class="imgbox">
+        <img src="{{ url_for('static', filename='images/services/lawn_card.svg') }}" alt="Soil leveling">
+        <button>Add +</button>
+      </div>
+    </div>
+
+    <div class="card" data-cat="setup">
+      <div>
+        <h3>Indoor plant setup</h3>
+        <p> 4.7 (32K reviews)</p>
+        <p class="price">₹149</p>
+      </div>
+      <div class="imgbox">
+        <img src="{{ url_for('static', filename='images/services/garden_card.svg') }}" alt="Indoor plant setup">
+        <button>Add +</button>
+      </div>
+    </div>
+
+    <div class="card" data-cat="setup">
+      <div>
+        <h3>Terrace garden setup</h3>
+        <p> 4.8 (14K reviews)</p>
+        <p class="price">₹299</p>
+      </div>
+      <div class="imgbox">
+        <img src="{{ url_for('static', filename='images/services/garden_card.svg') }}" alt="Terrace garden setup">
+        <button>Add +</button>
+      </div>
+    </div>
+
+    <div class="card" data-cat="setup">
+      <div>
+        <h3>Balcony garden setup</h3>
+        <p> 4.8 (29K reviews)</p>
+        <p class="price">₹249</p>
+      </div>
+      <div class="imgbox">
+        <img src="{{ url_for('static', filename='images/services/garden_card.svg') }}" alt="Balcony garden setup">
+        <button>Add +</button>
+      </div>
+    </div>
+{% endblock %}

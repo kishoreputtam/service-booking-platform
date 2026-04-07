@@ -1,0 +1,145 @@
+{% extends "electrician.html" %}
+
+{% block title %}
+<title>Carpentry Services</title>
+{% endblock %}
+
+
+{% block sidebar %}
+<div class="sidebar">
+    <h3>CARPENTRY</h3>
+
+    <div class="service-nav-list">
+      <div class="cat service-nav-item active" onclick="filter('cupboard', event)">
+        <img src="{{ url_for('static', filename='images/services/cupboard.svg') }}" alt="Cupboard and drawer">
+        <span>Cupboard & Drawer</span>
+      </div>
+      <div class="cat service-nav-item" onclick="filter('shelves', event)">
+        <img src="{{ url_for('static', filename='images/services/shelf.svg') }}" alt="Shelves and decor">
+        <span>Shelves & Decor</span>
+      </div>
+      <div class="cat service-nav-item" onclick="filter('window', event)">
+        <img src="{{ url_for('static', filename='images/services/curtain_rod_card.svg') }}" alt="Window and curtain">
+        <span>Window & curtain</span>
+      </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block content %}
+      <div class="card" data-cat="cupboard">
+        <div>
+          <h3>Cupboard repair</h3>
+          <p> 4.78 (64K reviews)</p>
+          <p class="price">Starts at ₹99</p>
+        </div>
+        <div class="imgbox">
+          <img src="{{ url_for('static', filename='images/services/cupboard.svg') }}" alt="Cupboard repair">
+          <button>Add +</button>
+        </div>
+      </div>
+
+      <div class="card" data-cat="cupboard">
+        <div>
+          <h3>Cupboard lock & latches</h3>
+          <p> 4.76 (24K reviews)</p>
+          <p class="price">₹79</p>
+        </div>
+        <div class="imgbox">
+          <img src="{{ url_for('static', filename='images/services/cupboard.svg') }}" alt="Cupboard lock and latches">
+          <button>Add +</button>
+        </div>
+      </div>
+
+
+      <div class="card" data-cat="cupboard">
+        <div>
+          <h3>Drawer repair & installation</h3>
+          <p>4.77 (23K reviews)</p>
+          <p class="price">₹99</p>
+        </div>
+        <div class="imgbox">
+          <img src="{{ url_for('static', filename='images/services/cupboard.svg') }}" alt="Drawer repair and installation">
+          <button class="add-btn" onclick="addItem(this)">Add + </button>
+
+          <div class="qty-control">
+            <button onclick="decrease(this)">-</button>
+            <span>1</span>
+            <button onclick="increase(this)">+</button>
+          </div>
+        </div>
+
+      </div>
+
+    <div class="card" data-cat="shelves">
+      <div>
+        <h3>Mirror installation</h3>
+        <p> 4.8 (26K reviews)</p>
+        <p class="price">₹119</p>
+      </div>
+      <div class="imgbox">
+        <img src="{{ url_for('static', filename='images/services/shelf.svg') }}" alt="Mirror installation">
+        <button>Add +</button>
+      </div>
+    </div>
+
+    <div class="card" data-cat="shelves">
+      <div>
+        <h3>Shelf installation</h3>
+        <p>4.8 (23K reviews)</p>
+        <p class="price">₹99</p>
+      </div>
+      <div class="imgbox">
+        <img src="{{ url_for('static', filename='images/services/shelf.svg') }}" alt="Shelf installation">
+        <button>Add +</button>
+      </div>
+    </div>
+
+    <div class="card" data-cat="shelves">
+      <div>
+        <h3>Drill(per hole)</h3>
+        <p> 4.9(100K reviews)</p>
+        <p class="price">₹49</p>
+      </div>
+      <div class="imgbox">
+        <img src="{{ url_for('static', filename='images/services/shelf.svg') }}" alt="Drill per hole">
+        <button>Add +</button>
+      </div>
+    </div>
+
+    <div class="card" data-cat="window">
+      <div>
+        <h3>Window AC Frame Installation</h3>
+        <p> 4.7 (2K reviews)</p>
+        <p class="price">₹349</p>
+      </div>
+      <div class="imgbox">
+        <img src="{{ url_for('static', filename='images/services/window_curtain.svg') }}" alt="Window AC frame installation">
+        <button>Add +</button>
+      </div>
+    </div>
+
+    <div class="card" data-cat="window">
+      <div>
+        <h3>Mosquito Net Installation</h3>
+        <p> 4.6(6K reviews)</p>
+        <p class="price">₹149</p>
+      </div>
+      <div class="imgbox">
+        <img src="{{ url_for('static', filename='images/services/mosquito_net_card.svg') }}" alt="Mosquito net installation">
+        <button>Add +</button>
+      </div>
+    </div>
+
+    <div class="card" data-cat="window">
+      <div>
+        <h3>Curtain rod Installation</h3>
+        <p> 4.8 (64K reviews)</p>
+        <p class="price">₹199</p>
+      </div>
+      <div class="imgbox">
+        <img src="{{ url_for('static', filename='images/services/curtain_rod_card.svg') }}" alt="Curtain rod installation">
+        <button>Add +</button>
+      </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Orders</title>
+  <link href="{{ url_for('static', filename='css/basestyles.css') }}" rel="stylesheet">
+  <link href="{{ url_for('static', filename='css/cart.css') }}" rel="stylesheet">
+</head>
+<body>
+  <div class="cart-container">
+    <div class="header">
+      <a href="{{ url_for('index') }}">←</a>
+      <h2>My Orders</h2>
+    </div>
+
+    {% if bookings %}
+      <div class="orders-list">
+        {% for booking in bookings %}
+          <div class="order-card">
+            <div class="order-top">
+              <div>
+                <p class="order-eyebrow">Order #{{ booking.id }}</p>
+                <h3>Booked Services</h3>
+              </div>
+              <span class="order-status">{{ format_customer_booking_status(booking.work_status or booking.status) }}</span>
+            </div>
+            <p class="order-summary">{{ booking.service_summary }}</p>
+            <div class="order-meta">
+              <p><strong>Total</strong> ₹{{ booking.total_price }}</p>
+              <p><strong>Slot</strong> {{ booking.slot }}</p>
+              <p><strong>Address</strong> {{ booking.address }}</p>
+              <p><strong>Payment</strong> {{ booking.payment_method }}</p>
+              {% if booking.assigned_professional_id %}
+              <p><strong>Assignment</strong> Professional allocated</p>
+              {% endif %}
+            </div>
+            <p class="order-date">Placed on {{ booking.created_at.strftime('%d %b %Y, %I:%M %p') if booking.created_at else 'Recently' }}</p>
+          </div>
+        {% endfor %}
+      </div>
+    {% else %}
+      <div class="orders-empty-card">
+        <div class="orders-empty-icon">🧾</div>
+        <h3>No orders yet</h3>
+        <p class="orders-empty">
+          Add a service to cart and place an order to see it here.
+        </p>
+        <a href="{{ url_for('index') }}" class="orders-empty-link">Explore Services</a>
+      </div>
+    {% endif %}
+  </div>
+</body>
+<script>
+  if (window.location.search.indexOf("ordered=1") !== -1) {
+    localStorage.removeItem("cart");
+  }
+</script>
+</html>

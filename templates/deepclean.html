@@ -1,0 +1,145 @@
+{% extends "electrician.html" %}
+
+{% block title %}
+<title>Deep Cleaning Services</title>
+{% endblock %}
+
+
+{% block sidebar %}
+<div class="sidebar">
+    <h3>DEEP CLEANING</h3>
+
+    <div class="service-nav-list">
+      <div class="cat service-nav-item active" onclick="filter('kitchen', event)">
+        <img src="{{ url_for('static', filename='images/services/chimney_kitchen_card.svg') }}" alt="Kitchen cleaning">
+        <span>Kitchen Cleaning</span>
+      </div>
+      <div class="cat service-nav-item" onclick="filter('living', event)">
+        <img src="{{ url_for('static', filename='images/services/carpet_card.svg') }}" alt="Living and bedroom">
+        <span>Living & Bedroom</span>
+      </div>
+      <div class="cat service-nav-item" onclick="filter('full', event)">
+        <img src="{{ url_for('static', filename='images/services/full_home_cleaning_card.svg') }}" alt="Full home and move-in">
+        <span>Full Home/Move-in</span>
+      </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block content %}
+      <div class="card" data-cat="kitchen">
+        <div>
+          <h3>Chimney Cleaning</h3>
+          <p> 4.82 (251K reviews)</p>
+          <p class="price">Starts at ₹718</p>
+        </div>
+        <div class="imgbox">
+          <img src="{{ url_for('static', filename='images/services/chimney_kitchen_card.svg') }}" alt="Chimney cleaning">
+          <button>Add +</button>
+        </div>
+      </div>
+
+      <div class="card" data-cat="kitchen">
+        <div>
+          <h3>Gas Stove Cleaning</h3>
+          <p> 4.79 (89K reviews)</p>
+          <p class="price">Starts at ₹99</p>
+        </div>
+        <div class="imgbox">
+          <img src="{{ url_for('static', filename='images/services/chimney_kitchen_card.svg') }}" alt="Gas stove cleaning">
+          <button>Add +</button>
+        </div>
+      </div>
+
+
+      <div class="card" data-cat="kitchen">
+        <div>
+          <h3>Complete Kitchen Cleaning</h3>
+          <p>4.77 (61K reviews)</p>
+          <p class="price">₹899</p>
+        </div>
+        <div class="imgbox">
+          <img src="{{ url_for('static', filename='images/services/chimney_kitchen_card.svg') }}" alt="Complete kitchen cleaning">
+          <button class="add-btn" onclick="addItem(this)">Add + </button>
+
+          <div class="qty-control">
+            <button onclick="decrease(this)">-</button>
+            <span>1</span>
+            <button onclick="increase(this)">+</button>
+          </div>
+        </div>
+
+      </div>
+
+    <div class="card" data-cat="living">
+      <div>
+        <h3>Sofa cleaning</h3>
+        <p> 4.8 (416K reviews)</p>
+        <p class="price">₹399 </p>
+      </div>
+      <div class="imgbox">
+        <img src="{{ url_for('static', filename='images/services/sofa_cleaning.svg') }}" alt="Sofa cleaning">
+        <button>Add +</button>
+      </div>
+    </div>
+
+    <div class="card" data-cat="living">
+      <div>
+        <h3>Carpet cleaning</h3>
+        <p>4.81 (213K reviews)</p>
+        <p class="price">₹349</p>
+      </div>
+      <div class="imgbox">
+        <img src="{{ url_for('static', filename='images/services/carpet_card.svg') }}" alt="Carpet cleaning">
+        <button>Add +</button>
+      </div>
+    </div>
+
+    <div class="card" data-cat="living">
+      <div>
+        <h3>Mattress/Bed Cleaning</h3>
+        <p> 4.6 (25K reviews)</p>
+        <p class="price">₹499</p>
+      </div>
+      <div class="imgbox">
+        <img src="{{ url_for('static', filename='images/services/home_cleaning.svg') }}" alt="Mattress and bed cleaning">
+        <button>Add +</button>
+      </div>
+    </div>
+
+    <div class="card" data-cat="full">
+      <div>
+        <h3>Apartment</h3>
+        <p> 4.7 (41K reviews)</p>
+        <p class="price">₹3,499</p>
+      </div>
+      <div class="imgbox">
+        <img src="{{ url_for('static', filename='images/services/full_home_cleaning_card.svg') }}" alt="Apartment cleaning">
+        <button>Add +</button>
+      </div>
+    </div>
+
+    <div class="card" data-cat="full">
+      <div>
+        <h3>Duplex/Bunglow</h3>
+        <p> 4.8 (311K reviews)</p>
+        <p class="price">₹4,299</p>
+      </div>
+      <div class="imgbox">
+        <img src="{{ url_for('static', filename='images/services/full_home_cleaning_card.svg') }}" alt="Duplex and bungalow cleaning">
+        <button>Add +</button>
+      </div>
+    </div>
+
+    <div class="card" data-cat="full">
+      <div>
+        <h3>Book by Room</h3>
+        <p> 4.8 (40K reviews)</p>
+        <p class="price">Starts at ₹799</p>
+      </div>
+      <div class="imgbox">
+        <img src="{{ url_for('static', filename='images/services/full_home_cleaning_card.svg') }}" alt="Book by room cleaning">
+        <button>Add +</button>
+      </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,108 @@
+{% extends "electrician.html" %}
+
+{% block title %}
+<title>Painting</title>
+{% endblock %}
+
+{% block sidebar %}
+<div class="sidebar">
+    <h4>PAINTING</h4>
+
+    <div class="service-nav-list">
+      <div class="cat service-nav-item active" onclick="filter('paint', event)">
+        <img src="{{ url_for('static', filename='images/services/painting_room_card.svg') }}" alt="Full home painting">
+        <span>Full Home Painting</span>
+      </div>
+      <div class="cat service-nav-item" onclick="filter('rooms', event)">
+        <img src="{{ url_for('static', filename='images/services/painting_wall_card.svg') }}" alt="Fewer walls and rooms">
+        <span>Fewer walls and rooms</span>
+      </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="cardparent">
+      <div class="card" data-cat="paint">
+        <div>
+          <h3> 1BHK</h3>
+          <p> 4.79 (57K reviews)</p>
+          <p class="price">₹11,999</p>
+        </div>
+        <div class="imgbox">
+          <img src="{{ url_for('static', filename='images/services/painting_room_card.svg') }}" alt="1BHK painting">
+          <button>Add +</button>
+        </div>
+      </div>
+
+      <div class="card" data-cat="paint">
+        <div>
+          <h3> 2BHK</h3>
+          <p> 4.76 (11K reviews)</p>
+          <p class="price">₹15,999</p>
+        </div>
+        <div class="imgbox">
+          <img src="{{ url_for('static', filename='images/services/painting_room_card.svg') }}" alt="2BHK painting">
+          <button>Add +</button>
+        </div>
+      </div>
+
+
+      <div class="card" data-cat="paint">
+        <div>
+          <h3>3BHK</h3>
+          <p>4.77 (61K reviews)</p>
+          <p class="price">₹20,999</p>
+        </div>
+        <div class="imgbox">
+          <img src="{{ url_for('static', filename='images/services/painting_room_card.svg') }}" alt="3BHK painting">
+          <button class="add-btn" onclick="addItem(this)">Add + </button>
+
+          <div class="qty-control">
+            <button onclick="decrease(this)">-</button>
+            <span>1</span>
+            <button onclick="increase(this)">+</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="card" data-cat="rooms">
+      <div>
+        <h3>1 wall</h3>
+        <p> 4.8 (28K reviews)</p>
+        <p class="price">₹2,999</p>
+      </div>
+      <div class="imgbox">
+        <img src="{{ url_for('static', filename='images/services/painting_wall_card.svg') }}" alt="1 wall painting">
+        <button>Add +</button>
+      </div>
+    </div>
+
+    <div class="card" data-cat="rooms">
+      <div>
+        <h3>2 walls</h3>
+        <p>4.7 (16K reviews)</p>
+        <p class="price">₹3,999</p>
+      </div>
+      <div class="imgbox">
+        <img src="{{ url_for('static', filename='images/services/painting_wall_card.svg') }}" alt="2 walls painting">
+        <button>Add +</button>
+      </div>
+    </div>
+
+    <div class="card" data-cat="rooms">
+      <div>
+        <h3>1 Room</h3>
+        <p> 4.6 (17K reviews)</p>
+        <p class="price">₹4,999</p>
+      </div>
+      <div class="imgbox">
+        <img src="{{ url_for('static', filename='images/services/painting_wall_card.svg') }}" alt="1 room painting">
+        <button>Add +</button>
+      </div>
+    </div>
+
+    
+{% endblock %}

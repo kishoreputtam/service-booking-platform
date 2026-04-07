@@ -1,0 +1,200 @@
+{% extends "index.html" %}
+
+{% block content %}
+
+<style>
+
+/* WRAPPER */
+.contact-wrapper {
+  max-width: 1100px;
+  margin: 80px auto;
+  padding: 0 20px;
+}
+
+/* HEADER */
+.contact-header {
+  text-align: center;
+  margin-bottom: 50px;
+}
+
+.contact-header h1 {
+  font-size: 36px;
+  font-weight: 700;
+}
+
+.contact-header p {
+  color: #666;
+  margin-top: 8px;
+  font-size: 15px;
+}
+
+/* LAYOUT */
+.contact-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 30px;
+}
+
+/* CARD */
+.contact-form,
+.contact-info {
+  background: #fff;
+  padding: 30px;
+  border-radius: 20px;
+  border: 1px solid #eee;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+  transition: all 0.3s ease;
+}
+
+/* HOVER */
+.contact-form:hover,
+.contact-info:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.08);
+}
+
+/* INPUTS */
+.contact-form input,
+.contact-form textarea {
+  width: 100%;
+  padding: 14px;
+  margin-top: 10px;
+  margin-bottom: 15px;
+  border-radius: 12px;
+  border: 1px solid #ddd;
+  font-size: 14px;
+  transition: all 0.25s ease;
+}
+
+.contact-form input:focus,
+.contact-form textarea:focus {
+  border-color: black;
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(0,0,0,0.05);
+}
+
+/* BUTTON */
+.contact-form button {
+  width: 100%;
+  padding: 14px;
+  background: black;
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.25s;
+}
+
+.contact-form button:hover {
+  background: #222;
+}
+
+/* SUCCESS MESSAGE */
+.success-msg {
+  background: #e6f9ec;
+  color: #1a7f37;
+  padding: 14px;
+  border-radius: 12px;
+  margin-bottom: 15px;
+  text-align: center;
+  animation: fadeSlide 0.4s ease;
+}
+
+/* ANIMATION */
+@keyframes fadeSlide {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* INFO */
+.contact-info div {
+  margin-bottom: 20px;
+}
+
+.contact-info h4 {
+  margin-bottom: 5px;
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+  .contact-container {
+    grid-template-columns: 1fr;
+  }
+}
+
+</style>
+
+
+<div class="contact-wrapper">
+
+  <!-- HEADER -->
+  <div class="contact-header">
+    <h1>Contact Us</h1>
+    <p>We’re here to help you with anything</p>
+  </div>
+
+  <div class="contact-container">
+
+    <!-- FORM -->
+    <div class="contact-form">
+      <h3>Send a Message</h3><br/>
+
+      <!-- FLASH MESSAGE -->
+      {% if request.args.get('message') %}
+        <div class="success-msg">
+          <strong>Your message has been received.</strong><br>
+          Our support team will get in touch shortly.
+        </div>
+      {% endif %}
+
+      <form method="POST" action="{{ url_for('contact') }}">
+
+        <input type="text" name="name" placeholder="Your Name" required>
+
+        <input type="email" name="email" placeholder="Your Email" required>
+
+        <textarea name="message" rows="5" placeholder="Your Message"></textarea>
+
+        <button type="submit">Send Message</button>
+
+      </form>
+    </div>
+
+    <!-- INFO -->
+    <div class="contact-info">
+      <h3>Get in Touch With Us</h3><br/>
+
+      <div>
+        <h4>Email</h4>
+        <p>support@homelynk.com</p>
+      </div>
+
+      <div>
+        <h4>Phone</h4>
+        <p>+91 6300035376</p>
+      </div>
+
+      <div>
+        <h4>Location</h4>
+        <p>Hyderabad, India</p>
+      </div>
+
+      <div>
+        <h4>Working Hours</h4>
+        <p>Mon - Sat: 9:00 AM - 8:00 PM</p>
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+{% endblock %}

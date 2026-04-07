@@ -1,0 +1,138 @@
+{% extends "index.html" %}
+
+{% block content %}
+
+<div style="padding:60px 0;">
+
+  <div class="container">
+
+    <!-- TITLE -->
+    <div style="text-align:center; margin-bottom:30px;">
+      <h2>All Services</h2>
+      <p style="color:#666;">Choose a category to continue</p>
+    </div>
+
+    <!-- YOUR ORIGINAL CATEGORY BOX -->
+    <div class="category-box" style="margin:auto; max-width:700px;">
+
+      <h3 style="text-align:center;">What are you looking for?</h3>
+
+      <div class="grid">
+
+        <!-- ELECTRICAL -->
+        <a href="{{ url_for('electrician') }}">
+          <div class="item">
+            <div class="itemlogo" style="padding-bottom: 8px;">
+              <img src="https://img.icons8.com/ios-filled/50/electrical.png"/>
+            </div>
+            <div class="itemname">
+              <p>Electrical Repairs</p>
+            </div>
+          </div>
+        </a>
+
+        <!-- PLUMBING -->
+        <a href="{{ url_for('plumbing') }}">
+          <div class="item">
+            <div class="itemlogo">
+              <img src="https://img.icons8.com/ios-filled/50/water.png"/>
+            </div>
+            <div class="itemname">
+              <p>Plumbing Solutions</p>
+            </div>
+          </div>
+        </a>
+
+        <!-- AC -->
+        <a href="{{ url_for('ac') }}">
+          <div class="item">
+            <div class="itemlogo">
+              <img src="https://img.icons8.com/ios-filled/50/air-conditioner.png"/>
+            </div>
+            <div class="itemname">
+              <p>AC & Appliance Repairs</p>
+            </div>
+          </div>
+        </a>
+
+        <!-- CLEANING -->
+        <a href="{{ url_for('deepclean') }}">
+          <div class="item">
+            <div class="itemlogo">
+              <img src="https://img.icons8.com/ios-filled/50/clean.png"/>
+            </div>
+            <div class="itemname">
+              <p>Deep Cleaning</p>
+            </div>
+          </div>
+        </a>
+
+        <!-- CARPENTRY -->
+        <a href="{{ url_for('carpentry') }}">
+          <div class="item">
+            <div class="itemlogo">
+              <img src="https://img.icons8.com/ios-filled/50/hammer.png"/>
+            </div>
+            <div class="itemname">
+              <p>Carpentry Services</p>
+            </div>
+          </div>
+        </a>
+
+        <!-- PAINTING -->
+        <a href="{{ url_for('painting') }}">
+          <div class="item">
+            <div class="itemlogo">
+              <img src="https://img.icons8.com/ios-filled/50/paint-palette.png"/>
+            </div>
+            <div class="itemname">
+              <p>Painting & Renovation</p>
+            </div>
+          </div>
+        </a>
+
+        <!-- SECURITY -->
+        <a href="{{ url_for('homesecurity') }}">
+          <div class="item">
+            <div class="itemlogo">
+              <img src="https://img.icons8.com/ios-filled/50/electrical.png"/>
+            </div>
+            <div class="itemname">
+              <p>Home Security</p>
+            </div>
+          </div>
+        </a>
+
+        <!-- GARDEN -->
+        <a href="{{ url_for('gardening') }}">
+          <div class="item">
+            <div class="itemlogo">
+              <img src="https://img.icons8.com/ios-filled/50/leaf.png"/>
+            </div>
+            <div class="itemname">
+              <p>Gardening & Outdoor</p>
+            </div>
+          </div>
+        </a>
+
+        <!-- INTERIOR -->
+        <a href="{{ url_for('interior') }}">
+          <div class="item">
+            <div class="itemlogo">
+              <img src="https://img.icons8.com/ios-filled/50/sofa.png"/>
+            </div>
+            <div class="itemname">
+              <p>Interior & Furniture</p>
+            </div>
+          </div>
+        </a>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,145 @@
+{% extends "electrician.html" %}
+
+{% block title %}
+<title>AC & Appliance Services</title>
+{% endblock %}
+
+
+{% block sidebar %}
+<div class="sidebar">
+    <h3>AC & APPLIANCES</h3>
+
+    <div class="service-nav-list">
+      <div class="cat service-nav-item active" onclick="filter('ac', event)">
+        <img src="{{ url_for('static', filename='images/services/ac_unit.svg') }}" alt="AC service">
+        <span>AC Service</span>
+      </div>
+      <div class="cat service-nav-item" onclick="filter('wash', event)">
+        <img src="{{ url_for('static', filename='images/services/washing_machine.svg') }}" alt="Washing machine">
+        <span>Washing Machine</span>
+      </div>
+      <div class="cat service-nav-item" onclick="filter('tv', event)">
+        <img src="{{ url_for('static', filename='images/services/tv_service_card.svg') }}" alt="Television">
+        <span>Television</span>
+      </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block content %}
+      <div class="card" data-cat="ac">
+        <div>
+          <h3>AC repair</h3>
+          <p> 4.69 (27K reviews)</p>
+          <p class="price">Starts at ₹499</p>
+        </div>
+        <div class="imgbox">
+          <img src="{{ url_for('static', filename='images/services/ac_unit.svg') }}" alt="AC repair">
+          <button>Add +</button>
+        </div>
+      </div>
+
+      <div class="card" data-cat="ac">
+        <div>
+          <h3>Gas refill & Check-up</h3>
+          <p> 4.76 (42K reviews)</p>
+          <p class="price">₹599</p>
+        </div>
+        <div class="imgbox">
+          <img src="{{ url_for('static', filename='images/services/ac_unit.svg') }}" alt="Gas refill and check-up">
+          <button>Add +</button>
+        </div>
+      </div>
+
+
+      <div class="card" data-cat="ac">
+        <div>
+          <h3>Foam-jet AC Service</h3>
+          <p>4.8 (22K reviews)</p>
+          <p class="price">₹599</p>
+        </div>
+        <div class="imgbox">
+          <img src="{{ url_for('static', filename='images/services/ac_unit.svg') }}" alt="Foam-jet AC service">
+          <button class="add-btn" onclick="addItem(this)">Add + </button>
+
+          <div class="qty-control">
+            <button onclick="decrease(this)">-</button>
+            <span>1</span>
+            <button onclick="increase(this)">+</button>
+          </div>
+        </div>
+
+      </div>
+
+    <div class="card" data-cat="wash">
+      <div>
+        <h3>Top load Machine Check-up</h3>
+        <p> 4.8 (16K reviews)</p>
+        <p class="price">₹199</p>
+      </div>
+      <div class="imgbox">
+        <img src="{{ url_for('static', filename='images/services/washing_machine.svg') }}" alt="Top load machine check-up">
+        <button>Add +</button>
+      </div>
+    </div>
+
+    <div class="card" data-cat="wash">
+      <div>
+        <h3>Front load Machine Check-up</h3>
+        <p>4.7 (31K reviews)</p>
+        <p class="price">₹199</p>
+      </div>
+      <div class="imgbox">
+        <img src="{{ url_for('static', filename='images/services/washing_machine.svg') }}" alt="Front load machine check-up">
+        <button>Add +</button>
+      </div>
+    </div>
+
+    <div class="card" data-cat="wash">
+      <div>
+        <h3>Installation & Uninstallation</h3>
+        <p> 4.9 (23K reviews)</p>
+        <p class="price">₹399</p>
+      </div>
+      <div class="imgbox">
+        <img src="{{ url_for('static', filename='images/services/washing_machine.svg') }}" alt="Washing machine installation and uninstallation">
+        <button>Add +</button>
+      </div>
+    </div>
+
+    <div class="card" data-cat="tv">
+      <div>
+        <h3>TV Check-up</h3>
+        <p> 4.6 (73K reviews)</p>
+        <p class="price">₹249</p>
+      </div>
+      <div class="imgbox">
+        <img src="{{ url_for('static', filename='images/services/tv_service_card.svg') }}" alt="TV check-up">
+        <button>Add +</button>
+      </div>
+    </div>
+
+    <div class="card" data-cat="tv">
+      <div>
+        <h3>Installation & Uninstallation</h3>
+        <p> 4.8 (10K reviews)</p>
+        <p class="price">₹349</p>
+      </div>
+      <div class="imgbox">
+        <img src="{{ url_for('static', filename='images/services/tv_service_card.svg') }}" alt="TV installation and uninstallation">
+        <button>Add +</button>
+      </div>
+    </div>
+
+    <div class="card" data-cat="tv">
+      <div>
+        <h3>Remote Issues</h3>
+        <p> 4.7 (22K reviews)</p>
+        <p class="price">₹199</p>
+      </div>
+      <div class="imgbox">
+        <img src="{{ url_for('static', filename='images/services/tv_service_card.svg') }}" alt="Remote issues">
+        <button>Add +</button>
+      </div>
+    </div>
+{% endblock %}

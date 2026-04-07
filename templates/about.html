@@ -1,0 +1,137 @@
+{% extends "index.html" %}
+
+{% block content %}
+
+<style>
+/* HERO CENTER FIX */
+.about-hero {
+  display: flex;
+  justify-content: center;
+  text-align: center;
+  padding: 60px 20px;
+}
+
+.about-hero-inner {
+  max-width: 700px;
+}
+
+/* STATS */
+.about-stats {
+  display: flex;
+  justify-content: center;
+  gap: 60px;
+  margin-top: 20px;
+}
+
+.about-stats div {
+  text-align: center;
+}
+
+/* MISSION SECTION */
+.mission-section {
+  padding: 60px 40px;
+}
+
+.mission-title {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+/* CARD CONTAINER */
+.mission-cards {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  flex-wrap: wrap;
+}
+
+/* CARD DESIGN */
+.mission-card {
+  background: #fff;
+  width: 260px;
+  padding: 30px 20px;
+  border-radius: 16px;
+  text-align: center;
+
+  box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+  transition: 0.3s;
+}
+
+.mission-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 18px 40px rgba(0,0,0,0.12);
+}
+
+.mission-card h4 {
+  margin-bottom: 10px;
+}
+
+.mission-card p {
+  color: #555;
+  font-size: 14px;
+}
+
+/* ICON STYLE */
+.mission-icon {
+  font-size: 28px;
+  margin-bottom: 12px;
+}
+</style>
+
+
+<!-- HERO -->
+<div class="about-hero">
+  <div class="about-hero-inner">
+
+    <h1>About Home Lynk</h1>
+
+    <p style="color:#555; margin-top:12px; line-height:1.7;">
+      Home Lynk is a trusted home services platform connecting users with 
+      verified professionals for cleaning, repairs, and more. 
+      We focus on delivering convenience, reliability, and high-quality service 
+      experiences at your doorstep.
+    </p>
+
+    <div class="about-stats">
+      <div>
+        <strong>4.8</strong><br>Service Rating
+      </div>
+      <div>
+        <strong>12M+</strong><br>Customers Globally
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- MISSION -->
+<section class="mission-section">
+
+  <h2 class="mission-title">Our Mission</h2>
+
+  <div class="mission-cards">
+
+    <div class="mission-card">
+      <div class="mission-icon">⚡</div>
+      <h4>Convenience</h4>
+      <p>Book services in seconds with a seamless experience.</p>
+    </div>
+
+    <div class="mission-card">
+      <div class="mission-icon">✔</div>
+      <h4>Quality</h4>
+      <p>Only verified professionals deliver trusted services.</p>
+    </div>
+
+    <div class="mission-card">
+      <div class="mission-icon">🔒</div>
+      <h4>Trust</h4>
+      <p>Transparent pricing and reliable support.</p>
+    </div>
+
+  </div>
+
+</section>
+
+{% endblock %}

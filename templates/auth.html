@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Auth</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="{{ url_for('static', filename='images/HLicon.ico') }}">
+  <link href="{{ url_for('static', filename='css/basestyles.css') }}" rel="stylesheet">
+  <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
+  <style>
+    body.auth-page {
+      min-height: 100vh;
+      background:
+        radial-gradient(circle at top left, rgba(0, 0, 0, 0.06), transparent 24%),
+        linear-gradient(180deg, #fafafa 0%, #f1f1f1 100%);
+    }
+
+    .auth-back {
+      position: fixed;
+      top: 22px;
+      left: 22px;
+      z-index: 5;
+      padding: 10px 16px;
+      border-radius: 999px;
+      color: #111;
+      text-decoration: none;
+      background: rgba(255, 255, 255, 0.92);
+      box-shadow: 0 10px 24px rgba(0, 0, 0, 0.08);
+      border: 1px solid #ececec;
+    }
+  </style>
+</head>
+
+<body class="auth-page">
+
+<a href="{{ auth_next if auth_next != url_for('auth') else url_for('index') }}" class="auth-back">← Back</a>
+
+<div class="modal" id="modal">
+  <div class="modal-box">
+
+    <span class="close" onclick="closeModal()">✖</span>
+
+    <!-- LOGIN -->
+    <form id="login" action="{{ url_for('login') }}" method="POST">
+      <h2>Login</h2>
+
+      <input type="hidden" name="next" value="{{ auth_next }}">
+
+      {% if request.args.get('login_error') %}
+        <p class="switch" style="color:#c62828; margin-top:0; margin-bottom:12px;">{{ request.args.get('login_error') }}</p>
+      {% endif %}
+
+      <div class="input-group">
+        <input type="email" name="email" placeholder="Email" required>
+      </div>
+
+      <div class="input-group">
+        <input type="password" name="password" placeholder="Password" required>
+      </div>
+
+      <button type="submit" class="auth-btn">Login</button>
+      <p class="switch" onclick="toggleForm()">Create account</p>
+    </form>
+
+    <!-- REGISTER -->
+    <form id="register" action="{{ url_for('register') }}" method="POST" style="display:none;">
+      <h2>Register</h2>
+
+      <input type="hidden" name="next" value="{{ auth_next }}">
+
+      {% if request.args.get('register_error') %}
+        <p class="switch" style="color:#c62828; margin-top:0; margin-bottom:12px;">{{ request.args.get('register_error') }}</p>
+      {% endif %}
+
+      <div class="input-group">
+        <input type="text" name="name" placeholder="Name" required>
+      </div>
+
+      <div class="input-group">
+        <input type="email" name="email" placeholder="Email" required>
+      </div>
+
+      <div class="input-group">
+        <input type="password" name="password" placeholder="Password" required>
+      </div>
+
+      <div class="input-group">
+        <select id="role" name="role" required>
+          <option value="user">User</option>
+          <option value="provider">Service Professional</option>
+        </select>
+      </div>
+
+      <button type="submit" class="auth-btn">Register</button>
+      <p class="switch" onclick="toggleForm()">Already have account?</p>
+    </form>
+
+  </div>
+</div>
+
+<script>
+function openModal() {
+  const m = document.getElementById("modal");
+  m.style.display = "flex";
+
+  setTimeout(() => {
+    m.classList.add("show");
+  }, 10);
+}
+
+function closeModal() {
+  const m = document.getElementById("modal");
+  m.classList.remove("show");
+
+  setTimeout(() => {
+    m.style.display = "none";
+  }, 300);
+}
+
+function toggleForm() {
+  const login = document.getElementById("login");
+  const register = document.getElementById("register");
+
+  if (login.style.display === "none") {
+    login.style.display = "block";
+    register.style.display = "none";
+  } else {
+    login.style.display = "none";
+    register.style.display = "block";
+  }
+}
+
+window.onload = function () {
+  const mode = "{{ request.args.get('mode', 'login') }}";
+  const role = document.getElementById("role");
+  const login = document.getElementById("login");
+  const register = document.getElementById("register");
+
+  if (mode === "register" && login && register) {
+    login.style.display = "none";
+    register.style.display = "block";
+  }
+
+  if (role && "{{ request.args.get('role', '') }}" === "provider") {
+    role.value = "provider";
+  }
+
+  openModal();
+};
+</script>
+
+</body>
+</html>

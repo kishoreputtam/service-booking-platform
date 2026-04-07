@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Home Lynk</title>
+
+<link rel="icon" href="{{ url_for('static', filename='images/HLicon.ico') }}">
+<link href="{{url_for('static',filename='css/basestyles.css')}}" rel="stylesheet">
+<link href="{{url_for('static',filename='css/style.css')}}" rel="stylesheet">
+<style>
+.pac-container {
+  z-index: 9999 !important;
+  border-radius: 12px;
+  font-family: Arial;
+}
+</style>
+</head>
+
+<body data-login-error="{{ '1' if request.args.get('login_error') else '0' }}" data-register-error="{{ '1' if request.args.get('register_error') else '0' }}" data-auth-mode="{{ request.args.get('auth', '') }}">
+
+<div class="navbar">
+<div class="nav-inner container">
+
+<a href="/" class="logo" style="text-decoration:none; color:inherit; display:flex; align-items:center;">
+  <span class="logo-badge">HL</span>
+  <span class="logo-copy">
+    <span class="logo-wordmark" aria-label="Home Lynk">
+      <span class="logo-letter">H</span>
+      <span class="logo-letter">O</span>
+      <span class="logo-letter">M</span>
+      <span class="logo-e" aria-hidden="true"><span></span></span>
+      <span class="logo-letter">L</span>
+      <span class="logo-letter">Y</span>
+      <span class="logo-letter">N</span>
+      <span class="logo-letter">K</span>
+    </span>
+  </span>
+</a>
+
+<div class="nav-links">
+{% if current_user %}
+<a href="{{ url_for('my_orders') }}">My Orders</a>
+{% else %}
+<a href="#" onclick="openLoginForOrders(event)">My Orders</a>
+{% endif %}
+<a href="{{ url_for('about') }}">About Us</a>
+<a href="{{ url_for('contact') }}">Contact Us</a>
+</div>
+
+<!-- ✅ FIXED ICONS -->
+<div class="icons">
+
+  <!-- Cart -->
+  <a href="{{ url_for('cart') }}" class="navbar-cart-link" id="navbarCartLink">
+    <div class="icon-circle-outline">
+      <svg viewBox="0 0 24 24" width="22" height="22" fill="none">
+        <path d="M6 6h15l-1.5 7.5a2 2 0 0 1-2 1.5H9a2 2 0 0 1-2-1.5L5 4H2"
+          stroke="#111" stroke-width="1.6"/>
+        <circle cx="9" cy="19" r="1.2" fill="#111"/>
+        <circle cx="18" cy="19" r="1.2" fill="#111"/>
+      </svg>
+      <span class="navbar-cart-badge" id="navbarCartBadge">1+</span>
+    </div>
+  </a>
+
+  {% if current_user %}
+  <div class="account-menu">
+    <button type="button" class="icon-outline account-toggle" onclick="toggleAccountDropdown(event)">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2">
+        <circle cx="12" cy="7" r="4"></circle>
+        <path d="M5.5 21a6.5 6.5 0 0 1 13 0"></path>
+      </svg>
+    </button>
+    <div class="account-dropdown" id="accountDropdown">
+      {% if current_user.role == 'provider' %}
+      <a href="{{ url_for('professional') }}">Professional Dashboard</a>
+      {% elif current_user.role == 'admin' %}
+      <a href="{{ url_for('admin_dashboard') }}">Admin Dashboard</a>
+      {% endif %}
+      <a href="{{ url_for('logout') }}">Logout</a>
+    </div>
+  </div>
+  {% else %}
+  <button type="button" class="icon-outline account-toggle" onclick="openModal()">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2">
+      <circle cx="12" cy="7" r="4"></circle>
+      <path d="M5.5 21a6.5 6.5 0 0 1 13 0"></path>
+    </svg>
+  </button>
+  {% endif %}
+
+</div>
+
+</div>
+</div>
+
+<!-- KEEP ALL YOUR EXISTING CONTENT SAME BELOW -->
+{% block content %}
+
+<div class="hero container">
+
+<div class="left">
+<h1>Home services at your <br/> doorstep</h1>
+
+<div class="category-box">
+<h3>What are you looking for?</h3>
+
+<div class="grid">
+
+<a href="{{ url_for('electrician') }}" style="text-decoration:none;color:inherit;">
+<div class="item">
+    <div class="itemlogo" style="padding-bottom: 8px;">
+        <img src="https://img.icons8.com/ios-filled/50/electrical.png"/>
+    </div>
+    <div class="itemname">
+        <p>Electrical Repairs</p>
+    </div>
+</div>
+</a>
+
+<a href="{{ url_for('plumbing') }}" style="text-decoration:none;color:inherit;">
+<div class="item">
+    <div class="itemlogo">
+        <img src="https://img.icons8.com/ios-filled/50/water.png"/>
+    </div>
+    <div class="itemname">
+        <p>Plumbing Solutions</p>
+    </div>
+</div>
+</a>
+
+<a href="{{ url_for('ac') }}" style="text-decoration:none;color:inherit;">
+<div class="item">
+    <div class="itemlogo">
+        <img src="https://img.icons8.com/ios-filled/50/air-conditioner.png"/>
+    </div>
+    <div class="itemname">
+        <p>AC & Appliance Repairs</p>
+    </div>
+</div>
+</a>
+
+<a href="{{ url_for('deepclean') }}" style="text-decoration:none;color:inherit;">
+<div class="item">
+    <div class="itemlogo">
+        <img src="https://img.icons8.com/ios-filled/50/clean.png"/>
+    </div>
+    <div class="itemname">
+        <p>Deep Cleaning</p>
+    </div>
+</div>
+</a>
+
+<a href="{{ url_for('carpentry') }}" style="text-decoration:none;color:inherit;">
+<div class="item">
+    <div class="itemlogo">
+        <img src="https://img.icons8.com/ios-filled/50/hammer.png"/>
+    </div>
+    <div class="itemname">
+        <p>Carpentary Services</p>
+    </div>
+</div>
+</a>
+
+<a href="{{ url_for('painting') }}" style="text-decoration:none;color:inherit;">
+<div class="item">
+    <div class="itemlogo">
+        <img src="https://img.icons8.com/ios-filled/50/paint-palette.png"/>
+    </div>
+    <div class="itemname">
+        <p>Painting & Renovation</p>
+    </div>
+</div>
+</a>
+
+<a href="{{ url_for('homesecurity') }}" style="text-decoration:none;color:inherit;">
+<div class="item">
+    <div class="itemlogo">
+        <img src="https://img.icons8.com/ios-filled/50/electrical.png"/>
+    </div>
+    <div class="itemname">
+        <p>Home Security</p>
+    </div>
+</div>
+</a>
+
+<a href="{{ url_for('gardening') }}" style="text-decoration:none;color:inherit;">
+<div class="item">
+    <div class="itemlogo">
+        <img src="https://img.icons8.com/ios-filled/50/leaf.png"/>
+    </div>
+    <div class="itemname">
+        <p>Gardening & Outdoor</p>
+    </div>
+</div>
+</a>
+
+<a href="{{ url_for('interior') }}" style="text-decoration:none;color:inherit;">
+<div class="item">
+    <div class="itemlogo">
+        <img src="https://img.icons8.com/ios-filled/50/sofa.png"/>
+    </div>
+    <div class="itemname">
+        <p>Interior & Furniture</p>
+    </div>
+</div>
+</a>
+
+</div>
+</div>
+
+<div class="stats">
+<div><strong>4.8</strong>Service Rating</div>
+<div><strong>12M+</strong>Customers Globally</div>
+</div>
+
+</div>
+
+<div class="right">
+    <div class="rightcolumn">
+        <img class="firstbig" src="{{url_for('static',filename='images/img1.jpeg')}}" alt="AC & Appliance Services">
+        <img class="firstsmall" src="{{url_for('static',filename='images/img4.jpeg')}}" alt="">
+    </div>
+    <div class="rightcolumn">
+        <img class="secondsmall" src="{{url_for('static',filename='images/img2.jpeg')}}">
+        <img class="secondbig" src="{{url_for('static',filename='images/img3.jpeg')}}">
+    </div>
+</div>
+
+</div>
+</section>
+<section class="spotlight-wrapper">
+
+    <div class="spotlight">
+
+        <h2>In the Spotlight</h2>
+
+        <div class="spotlight-container">
+
+            <!-- CARD 1 -->
+            <div class="spot-card card1">
+                <span class="tag">Most booked</span>
+                <h4>Electrical Repairs</h4>
+                <p>Fan, light, switch and wiring fixes from trusted professionals.</p>
+                <a href="{{ url_for('electrician') }}"><button>Explore</button></a>
+            </div>
+
+            <!-- CARD 2 -->
+            <div class="spot-card card2">
+                <span class="tag green">Fresh & clean</span>
+                <h4>Deep Cleaning</h4>
+                <p>Kitchen, sofa, carpet and full-home cleaning for a neater space.</p>
+                <a href="{{ url_for('deepclean') }}"><button>Book now</button></a>
+            </div>
+
+            <!-- CARD 3 -->
+            <div class="spot-card card3">
+                <span class="tag">Popular choice</span>
+                <h4>AC & Appliance Repair</h4>
+                <p>Quick support for ACs, washing machines and TVs at your doorstep.</p>
+                <a href="{{ url_for('ac') }}"><button>Book now</button></a>
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+   
+
+
+
+<section class="curation-wrapper">
+
+    <div class="curation">
+
+        <h2>Featured Services</h2>
+        <p class="subtitle">of our finest experiences</p>
+
+        <div class="curation-box">
+
+            <!-- LEFT ARROW -->
+            <button class="arrow left" onclick="slideLeft()">&#8592;</button>
+
+            <!-- SCROLL AREA -->
+            <div class="curation-scroll" id="curationScroll">
+
+                <div class="curation-card">
+    <video src="{{ url_for('static', filename='videos/electricity.mp4') }}" autoplay muted loop playsinline></video>
+    <span>Electrical Repairs</span>
+</div>
+
+                <div class="curation-card">
+                    <video src="{{ url_for('static', filename='videos/plumbing.mp4') }}" autoplay muted loop playsinline></video>
+                    <span>Plumbing Solutions</span>
+                </div>
+
+                <div class="curation-card">
+                    <video src="{{ url_for('static', filename='videos/ac_repair.mp4') }}" autoplay muted loop playsinline></video>
+                    <span>AC & Appliance Repair</span>
+                </div>
+
+                <div class="curation-card">
+                    <video src="{{ url_for('static', filename='videos/deep_cleaning.mp4') }}" autoplay muted loop playsinline></video>
+                    <span>Deep Cleaning</span>
+                </div>
+
+                <div class="curation-card">
+                    <video src="{{ url_for('static', filename='videos/furniture.mp4') }}" autoplay muted loop playsinline></video>
+                    <span>Carpentry</span>
+                </div>
+
+                <div class="curation-card">
+                    <video src="{{ url_for('static', filename='videos/painting.mp4') }}" autoplay muted loop playsinline></video>
+                    <span>Painting & Renovation</span>
+                </div>
+
+                <div class="curation-card">
+                    <video src="{{ url_for('static', filename='videos/home_security.mp4') }}" autoplay muted loop playsinline></video>
+                    <span>Home Security</span>
+                </div>
+
+                <div class="curation-card">
+                    <video src="{{ url_for('static', filename='videos/gardening.mp4') }}" autoplay muted loop playsinline></video>
+                    <span>Gardening & Outdoor</span>
+                </div>
+
+                <div class="curation-card">
+                    <video src="{{ url_for('static', filename='videos/interior.mp4') }}" autoplay muted loop playsinline></video>
+                    <span>Interior & Furniture</span>
+                </div>
+
+                
+
+            </div>
+
+            <!-- RIGHT ARROW (FIXED POSITION ✅) -->
+            <button class="arrow right" onclick="slideRight()">&#8594;</button>
+
+        </div>
+
+    </div>
+
+</section>
+
+<section class="reviews-wrapper">
+
+    <div class="reviews">
+
+        <h2>User reviews and feedback</h2>
+        <p class="subtitle">
+            See how users love your platform through their experiences
+        </p>
+
+        <div class="reviews-scroll" id="reviewScroll">
+
+            <!-- CARD -->
+            <div class="review-card">
+                <span class="quote">
+                    <img src="https://framerusercontent.com/images/cd4JqXSCWYEomNLiZfc2xDexIjk.svg?width=22&height=16" />
+</span>
+                <div class="review-top">
+                    <img src="https://randomuser.me/api/portraits/women/11.jpg">
+                    <div>
+                        <h4>Kirti</h4>
+                        <span>Sector 56</span>
+                    </div>
+                </div>
+                <p>
+                    I’d say it was great value for money. The urgency was handled well, without compromising quality. Really satisfied with the experience.
+                </p>
+            </div>
+
+            <div class="review-card">
+                <span class="quote">
+                    <img src="https://framerusercontent.com/images/cd4JqXSCWYEomNLiZfc2xDexIjk.svg?width=22&height=16" />
+                </span>
+                <div class="review-top">
+                    <img src="https://randomuser.me/api/portraits/women/12.jpg">
+                    <div>
+                        <h4>Neha</h4>
+                        <span>Sector 57</span>
+                    </div>
+                </div>
+                <p>
+                    The service was simple and effective. It met my expectations without any hassle. Good overall experience.
+                </p>
+            </div>
+
+            <div class="review-card">
+                <span class="quote">
+                    <img src="https://framerusercontent.com/images/cd4JqXSCWYEomNLiZfc2xDexIjk.svg?width=22&height=16" />
+                </span>
+                <div class="review-top">
+                    <img src="https://randomuser.me/api/portraits/men/13.jpg">
+                    <div>
+                        <h4>Pradnyesh</h4>
+                        <span>Suncity</span>
+                    </div>
+                </div>
+                <p>
+                    Great work, my home was spotless and fresh. The cleaning was thorough and attention to detail was impressive.
+                </p>
+            </div>
+
+            <div class="review-card">
+                <span class="quote">
+                    <img src="https://framerusercontent.com/images/cd4JqXSCWYEomNLiZfc2xDexIjk.svg?width=22&height=16" />
+                </span>
+                <div class="review-top">
+                    <img src="https://randomuser.me/api/portraits/men/14.jpg">
+                    <div>
+                        <h4>Sameer</h4>
+                        <span>Sector 57</span>
+                    </div>
+                </div>
+                <p>
+                    Really liked your service, smooth, efficient, and just what I needed. Would definitely recommend to others.
+                </p>
+            </div>
+
+            <div class="review-card">
+                <span class="quote">
+                    <img src="https://framerusercontent.com/images/cd4JqXSCWYEomNLiZfc2xDexIjk.svg?width=22&height=16" />
+                </span>
+                <div class="review-top">
+                    <img src="https://randomuser.me/api/portraits/women/15.jpg">
+                    <div>
+                        <h4>Karishma</h4>
+                        <span>Suncity</span>
+                    </div>
+                </div>
+                <p>
+                    Absolutely excellent service! The team was prompt and professional throughout. Loved the experience.
+                </p>
+            </div>
+
+            <div class="review-card">
+                <span class="quote">
+                    <img src="https://framerusercontent.com/images/cd4JqXSCWYEomNLiZfc2xDexIjk.svg?width=22&height=16" />
+                </span>
+                <div class="review-top">
+                    <img src="https://randomuser.me/api/portraits/women/16.jpg">
+                    <div>
+                        <h4>Rabia</h4>
+                        <span>Suncity</span>
+                    </div>
+                </div>
+                <p>
+                    Really impressive compared to other platforms. The service was reliable and communication was clear.
+                </p>
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+        
+    
+<section class="faq-section">
+
+  <div class="container"> <!-- FIXED WIDTH -->
+
+    <h1>Frequently Asked Questions</h1><br/>
+
+    <div class="faq-container">
+
+      <div class="faq-item">
+        <div class="faq-question">
+          What services does Homelynk offer?
+          <span class="faq-icon">+</span>
+        </div>
+        <div class="faq-answer">
+          Homelynk offers a wide range of home services including cleaning, AC repair, plumbing, electrical work, salon services, and more.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question">
+          How do I book a service on Homelynk?
+          <span class="faq-icon">+</span>
+        </div>
+        <div class="faq-answer">
+          Select a category, choose a service, pick a time slot, and confirm your booking.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question">
+          Are the professionals verified and trustworthy?
+          <span class="faq-icon">+</span>
+        </div>
+        <div class="faq-answer">
+          Yes, all professionals undergo strict verification and background checks.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question">
+          What if I am not satisfied with the service?
+          <span class="faq-icon">+</span>
+        </div>
+        <div class="faq-answer">
+          You can raise a complaint and our support team will resolve it quickly.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question">
+          What payment methods are available?
+          <span class="faq-icon">+</span>
+        </div>
+        <div class="faq-answer">
+          UPI, credit/debit cards, and cash on service are supported.
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</section>
+
+<!-- Footer -->
+</section>
+</section>
+
+{% endblock %}
+
+<!-- Footer -->
+<!-- Footer -->
+<footer class="footer">
+
+    <div class="footer-container">
+
+        <div class="footer-brand">
+            <span class="footer-brand-badge">
+              <img src="{{ url_for('static', filename='images/iconbg.png') }}" alt="Home Lynk">
+            </span>
+        </div>
+
+        <div class="footer-column">
+            <h3>Company</h3>
+            <a href="/about">About us</a>
+            <a href="/terms">Terms & Conditions</a>
+            <a href="/privacy">Privacy Policy</a>
+        </div>
+
+        <div class="footer-column">
+            <h3>Customers</h3>
+            <a href="/reviews">Reviews</a>
+            <a href="/categories">Categories</a>
+            <a href="/contact">Contact Us</a>
+        </div>
+
+        <div class="footer-column">
+            <h3>Professionals</h3>
+            <a href="#" onclick="openProfessionalRegister(event)">Register</a>
+        </div>
+
+        <div class="footer-column">
+            <h3>Social</h3>
+            <div class="social-icons">
+
+  <a href="https://facebook.com" target="_blank">
+    <img src="https://img.icons8.com/ios-filled/24/facebook-new.png"/>
+  </a>
+
+  <a href="https://instagram.com" target="_blank">
+    <img src="https://img.icons8.com/ios-filled/24/instagram-new.png"/>
+  </a>
+
+  <a href="https://wa.me/916300035376" target="_blank">
+    <img src="https://img.icons8.com/ios-filled/24/whatsapp.png"/>
+  </a>
+
+  <a href="/" target="_blank">
+    <img src="https://img.icons8.com/ios-filled/24/domain.png"/>
+  </a>
+
+</div>
+
+            
+        </div>
+
+    </div>
+
+    <div class="footer-bottom">
+        <p>© 2026 Homelynk - Service Booking Platform</p>
+    </div>
+
+</footer>
+<!-- (Hero, spotlight, curation, reviews, faq, footer unchanged) -->
+
+<!-- AUTH MODAL -->
+<div class="modal" id="modal">
+  <div class="modal-box">
+
+    <span class="close" onclick="closeModal()">✖</span>
+
+    <form id="login" action="{{ url_for('login') }}" method="POST">
+      <h2>Login</h2>
+
+      <input type="hidden" name="next" value="{{ url_for('index') }}">
+
+      {% if request.args.get('login_error') %}
+        <p class="switch" style="color:#c62828; margin-top:0; margin-bottom:12px;">{{ request.args.get('login_error') }}</p>
+      {% endif %}
+
+      <div class="input-group">
+        <input type="email" name="email" placeholder="Email" required>
+      </div>
+
+      <div class="input-group">
+        <input type="password" name="password" placeholder="Password" required>
+      </div>
+
+      <button type="submit" class="auth-btn">Login</button>
+
+      <p class="switch" onclick="toggleForm()">Create account</p>
+    </form>
+
+    <form id="register" action="{{ url_for('register') }}" method="POST" style="display:none;">
+      <h2>Register</h2>
+
+      {% if request.args.get('register_error') %}
+        <p class="switch" style="color:#c62828; margin-top:0; margin-bottom:12px;">{{ request.args.get('register_error') }}</p>
+      {% endif %}
+
+      <div class="input-group">
+        <input type="text" name="name" placeholder="Name" required>
+      </div>
+
+      <div class="input-group">
+        <input type="email" name="email" placeholder="Email" required>
+      </div>
+
+      <div class="input-group">
+        <input type="password" name="password" placeholder="Password" required>
+      </div>
+
+      <div class="input-group">
+        <select id="role" name="role" required>
+          <option value="user">User</option>
+          <option value="provider">Service Professional</option>
+        </select>
+      </div>
+
+      <button type="submit" class="auth-btn">Register</button>
+
+      <p class="switch" onclick="toggleForm()">Already have account?</p>
+    </form>
+
+  </div>
+</div>
+
+<!-- ✅ JS MUST BE AT BOTTOM -->
+<script src="{{url_for('static',filename='js/script.js')}}"></script>
+
+</body>
+</html>

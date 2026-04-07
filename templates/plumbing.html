@@ -1,0 +1,145 @@
+{% extends "electrician.html" %}
+
+{% block title %}
+<title>Plumbing Services</title>
+{% endblock %}
+
+
+{% block sidebar %}
+<div class="sidebar">
+    <h3>PLUMBING</h3>
+
+    <div class="service-nav-list">
+      <div class="cat service-nav-item active" onclick="filter('tap', event)">
+        <img src="{{ url_for('static', filename='images/services/plumbing_sink.svg') }}" alt="Basin and blockage">
+        <span>Basin & blockage</span>
+      </div>
+      <div class="cat service-nav-item" onclick="filter('pipe', event)">
+        <img src="{{ url_for('static', filename='images/services/plumbing_toilet.svg') }}" alt="Toilet">
+        <span>Toilet</span>
+      </div>
+      <div class="cat service-nav-item" onclick="filter('bath', event)">
+        <img src="{{ url_for('static', filename='images/services/water_tank_card.svg') }}" alt="Water tank and motor">
+        <span>Water tank & motor</span>
+      </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block content %}
+      <div class="card" data-cat="tap">
+        <div>
+          <h3>Wash basin leakage repair</h3>
+          <p> 4.79 (57K reviews)</p>
+          <p class="price">Starts at ₹99</p>
+        </div>
+        <div class="imgbox">
+          <img src="{{ url_for('static', filename='images/services/plumbing_sink.svg') }}" alt="Wash basin leakage repair">
+          <button>Add +</button>
+        </div>
+      </div>
+
+      <div class="card" data-cat="tap">
+        <div>
+          <h3>Wash basin installation</h3>
+          <p> 4.76 (11K reviews)</p>
+          <p class="price">₹469</p>
+        </div>
+        <div class="imgbox">
+          <img src="{{ url_for('static', filename='images/services/plumbing_sink.svg') }}" alt="Wash basin installation">
+          <button>Add +</button>
+        </div>
+      </div>
+
+
+      <div class="card" data-cat="tap">
+        <div>
+          <h3>Drain blockage removal</h3>
+          <p>4.77 (61K reviews)</p>
+          <p class="price">₹199</p>
+        </div>
+        <div class="imgbox">
+          <img src="{{ url_for('static', filename='images/services/plumbing_sink.svg') }}" alt="Drain blockage removal">
+          <button class="add-btn" onclick="addItem(this)">Add + </button>
+
+          <div class="qty-control">
+            <button onclick="decrease(this)">-</button>
+            <span>1</span>
+            <button onclick="increase(this)">+</button>
+          </div>
+        </div>
+
+      </div>
+
+    <div class="card" data-cat="pipe">
+      <div>
+        <h3>Flush tank repair</h3>
+        <p> 4.8 (16K reviews)</p>
+        <p class="price">₹149</p>
+      </div>
+      <div class="imgbox">
+        <img src="{{ url_for('static', filename='images/services/plumbing_toilet.svg') }}" alt="Flush tank repair">
+        <button>Add +</button>
+      </div>
+    </div>
+
+    <div class="card" data-cat="pipe">
+      <div>
+        <h3>Indian toilet repair/installation</h3>
+        <p>4.7 (4K reviews)</p>
+        <p class="price">₹699</p>
+      </div>
+      <div class="imgbox">
+        <img src="{{ url_for('static', filename='images/services/plumbing_toilet.svg') }}" alt="Indian toilet repair and installation">
+        <button>Add +</button>
+      </div>
+    </div>
+
+    <div class="card" data-cat="pipe">
+      <div>
+        <h3>Western toilet repair/installation</h3>
+        <p> 4.9 (15K reviews)</p>
+        <p class="price">₹699</p>
+      </div>
+      <div class="imgbox">
+        <img src="{{ url_for('static', filename='images/services/plumbing_toilet.svg') }}" alt="Western toilet repair and installation">
+        <button>Add +</button>
+      </div>
+    </div>
+
+    <div class="card" data-cat="bath">
+      <div>
+        <h3>Overhead watertank installation</h3>
+        <p> 4.7 (762 reviews)</p>
+        <p class="price">₹699</p>
+      </div>
+      <div class="imgbox">
+        <img src="{{ url_for('static', filename='images/services/water_tank_card.svg') }}" alt="Overhead water tank installation">
+        <button>Add +</button>
+      </div>
+    </div>
+
+    <div class="card" data-cat="bath">
+      <div>
+        <h3>Water tank repair</h3>
+        <p> 4.6 (6K reviews)</p>
+        <p class="price">₹99</p>
+      </div>
+      <div class="imgbox">
+        <img src="{{ url_for('static', filename='images/services/water_tank_card.svg') }}" alt="Water tank repair">
+        <button>Add +</button>
+      </div>
+    </div>
+
+    <div class="card" data-cat="bath">
+      <div>
+        <h3>Motor air cavity removal </h3>
+        <p> 4.64 (9K reviews)</p>
+        <p class="price">₹99</p>
+      </div>
+      <div class="imgbox">
+        <img src="{{ url_for('static', filename='images/services/water_tank_card.svg') }}" alt="Motor air cavity removal">
+        <button>Add +</button>
+      </div>
+    </div>
+{% endblock %}

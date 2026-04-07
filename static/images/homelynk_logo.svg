@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1500 284" role="img" aria-label="Homelynk logo">
+  <g fill="none" stroke="#d6a84d" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M14 82c10-42 46-67 106-72" stroke-width="8"/>
+    <path d="M14 124c10-57 58-94 126-100" stroke-width="8"/>
+    <path d="M14 168c10-72 72-117 144-122" stroke-width="8"/>
+    <path d="M84 170V74l137-118 137 118" stroke-width="16"/>
+    <path d="M120 146V216h162c44 0 80-36 80-80" stroke-width="16"/>
+    <path d="M120 216c54 0 139 1 192 0" stroke-width="16"/>
+    <path d="M108 236c46 10 127 14 194 0" stroke-width="12"/>
+    <path d="M374 212c-8 10-19 16-34 16" stroke-width="12"/>
+  </g>
+  <g fill="#d6a84d">
+    <rect x="194" y="92" width="36" height="36" rx="3"/>
+    <rect x="238" y="92" width="36" height="36" rx="3"/>
+    <rect x="194" y="136" width="36" height="36" rx="3"/>
+    <rect x="238" y="136" width="36" height="36" rx="3"/>
+  </g>
+  <g fill="#1f1f1f" font-family="Inter, Arial, sans-serif" font-weight="300">
+    <text x="424" y="214" font-size="164" letter-spacing="10">HOMELYNK</text>
+  </g>
+</svg>

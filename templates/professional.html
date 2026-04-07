@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Professional Dashboard</title>
+  <link rel="icon" href="{{ url_for('static', filename='images/HLicon.ico') }}">
+  <link href="{{ url_for('static', filename='css/basestyles.css') }}" rel="stylesheet">
+  <link href="{{ url_for('static', filename='css/dashboard.css') }}" rel="stylesheet">
+</head>
+<body class="dashboard-body">
+  <div class="dashboard-shell">
+    <div class="dashboard-topbar">
+      <a href="{{ url_for('index') }}" class="brand-link">
+        <span class="brand-badge">
+          <img src="{{ url_for('static', filename='images/iconbg.png') }}" alt="Home Lynk" class="brand-image">
+        </span>
+        <span>Professional</span>
+      </a>
+      <div class="topbar-actions">
+        <a href="{{ url_for('index') }}" class="ghost-link">Home</a>
+        <a href="{{ url_for('logout') }}" class="cta-link">Logout</a>
+      </div>
+    </div>
+
+    <section class="hero-panel">
+      <div class="hero-grid">
+        <div>
+          <span class="eyebrow">Service Partner Hub</span>
+          <h1>Manage assigned jobs first, then maintain your verified professional profile below.</h1>
+          <p>
+            Orders only appear after admin approval and assignment. Once your verification is submitted,
+            the setup section collapses so the dashboard feels cleaner and more professional.
+          </p>
+        </div>
+        <div class="subtle-box">
+          <h3>Current flow</h3>
+          <p>1. Submit verification details once.</p>
+          <p>2. Wait for admin approval.</p>
+          <p>3. Receive only assigned matching jobs.</p>
+          <p>4. Read admin remarks and update job progress.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="stats-grid">
+      <div class="dashboard-card">
+        <div class="stat-value">{{ stats.active_orders }}</div>
+        <div class="stat-label">Active Orders</div>
+      </div>
+      <div class="dashboard-card">
+        <div class="stat-value">{{ stats.completed_orders }}</div>
+        <div class="stat-label">Completed Jobs</div>
+      </div>
+      <div class="dashboard-card">
+        <div class="stat-value">₹{{ stats.total_payout_value }}</div>
+        <div class="stat-label">Total Payout Value</div>
+      </div>
+      <div class="dashboard-card">
+        <div class="stat-value">₹{{ stats.available_payout }}</div>
+        <div class="stat-label">Completed Payout</div>
+      </div>
+    </section>
+
+    <section class="section-card" id="orders-section">
+      <div class="section-header">
+        <div>
+          <h2>Active Orders</h2>
+          <p>Only admin-approved and properly assigned active orders appear here.</p>
+        </div>
+      </div>
+
+      {% if request.args.get('message') %}
+        <div class="flash-list" style="margin-bottom: 18px;">
+          <div class="flash-item flash-{{ 'error' if request.args.get('message_type') == 'error' else 'success' }}">
+            {{ request.args.get('message') }}
+          </div>
+        </div>
+      {% endif %}
+
+      {% if profile and profile.verification_status == 'approved' and assigned_orders %}
+        <div class="order-grid">
+          {% for order in assigned_orders %}
+            <div class="order-card">
+              <div class="order-head">
+                <div>
+                  <h3>Order #{{ order.id }}</h3>
+                  <p class="muted">{{ order.service_category or 'Service Under Review' }}</p>
+                </div>
+                <span class="status-pill status-{{ 'approved' if order.work_status == 'completed' else 'pending' }}">{{ format_status_label(order.work_status) }}</span>
+              </div>
+              <div class="data-list">
+                <div class="data-row"><strong>Customer Address</strong><span>{{ order.address }}</span></div>
+                <div class="data-row"><strong>Service Summary</strong><span>{{ order.service_summary }}</span></div>
+                <div class="data-row"><strong>Visit Slot</strong><span>{{ order.slot }}</span></div>
+                <div class="data-row"><strong>Payout</strong><span>₹{{ order.professional_amount }}</span></div>
+                <div class="data-row"><strong>Admin Commission</strong><span>₹{{ order.admin_commission }}</span></div>
+                <div class="data-row"><strong>Admin Remarks</strong><span>{{ order.admin_notes or 'No remarks added yet.' }}</span></div>
+              </div>
+
+              {% if order.work_status != 'completed' %}
+                <form class="order-actions compact-form" action="{{ url_for('update_professional_order_status', booking_id=order.id) }}" method="POST">
+                  <div class="inline-fields">
+                    <div class="form-group">
+                      <label>Update Job Status</label>
+                      <select name="work_status">
+                        <option value="assigned" {% if order.work_status == 'assigned' %}selected{% endif %}>Assigned</option>
+                        <option value="in_progress" {% if order.work_status == 'in_progress' %}selected{% endif %}>In Progress</option>
+                        <option value="completed" {% if order.work_status == 'completed' %}selected{% endif %}>Completed</option>
+                      </select>
+                    </div>
+                    <button type="submit" class="form-button">Save Status</button>
+                  </div>
+                </form>
+              {% else %}
+                <div class="closed-note">This order is completed and locked.</div>
+              {% endif %}
+            </div>
+          {% endfor %}
+        </div>
+      {% elif profile and profile.verification_status != 'approved' %}
+        <div class="empty-state">Your account is not approved yet, so no jobs are active. Wait for admin verification first.</div>
+      {% else %}
+        <div class="empty-state">No active orders yet. Complete verification so the admin can review your profile.</div>
+      {% endif %}
+    </section>
+
+    <section class="section-card">
+      <div class="section-header">
+        <div>
+          <h2>Verification & Service Setup</h2>
+          <p>Once submitted, this section becomes a compact summary instead of staying fully open.</p>
+        </div>
+        {% if profile %}
+          <span class="status-pill status-{{ profile.verification_status }}">{{ profile.verification_status|title }}</span>
+        {% endif %}
+      </div>
+
+      {% set selected_services = profile.service_categories.split(', ') if profile and profile.service_categories else [] %}
+      {% set show_form = (not profile) or profile.verification_status == 'rejected' or profile_edit_mode %}
+
+      {% if show_form %}
+        <div class="grid-two">
+          <form class="stack-form" action="{{ url_for('complete_professional_profile') }}" method="POST" enctype="multipart/form-data">
+            <div class="form-grid">
+              <div class="form-group">
+                <label>Phone Number</label>
+                <input type="text" name="phone" value="{{ profile.phone if profile else '' }}" placeholder="9876543210" required>
+              </div>
+              <div class="form-group">
+                <label>City</label>
+                <input type="text" name="city" value="{{ profile.city if profile else '' }}" placeholder="Bangalore" required>
+              </div>
+              <div class="form-group">
+                <label>Experience (Years)</label>
+                <input type="number" name="years_experience" min="0" value="{{ profile.years_experience if profile else 0 }}" required>
+              </div>
+              <div class="form-group">
+                <label>GST Number</label>
+                <input type="text" name="gst_number" value="{{ profile.gst_number if profile and profile.gst_number else '' }}" placeholder="Optional for now">
+              </div>
+              <div class="form-group">
+                <label>Aadhaar Number</label>
+                <input type="text" name="aadhaar_number" value="{{ profile.aadhaar_number if profile else '' }}" required>
+              </div>
+              <div class="form-group">
+                <label>PAN Number</label>
+                <input type="text" name="pan_number" value="{{ profile.pan_number if profile else '' }}" required>
+              </div>
+              <div class="form-group">
+                <label>Bank Account Holder</label>
+                <input type="text" name="bank_account_holder" value="{{ profile.bank_account_holder if profile else '' }}" required>
+              </div>
+              <div class="form-group">
+                <label>Bank Account Number</label>
+                <input type="text" name="bank_account_number" value="{{ profile.bank_account_number if profile else '' }}" required>
+              </div>
+              <div class="form-group full">
+                <label>IFSC Code</label>
+                <input type="text" name="ifsc_code" value="{{ profile.ifsc_code if profile else '' }}" required>
+              </div>
+              <div class="form-group full">
+                <label>About Your Service</label>
+                <textarea name="about" placeholder="Tell the company about your work quality, timings, tools and service approach." required>{{ profile.about if profile else '' }}</textarea>
+              </div>
+              <div class="form-group full">
+                <label>Select Services You Can Offer</label>
+                <div class="checkbox-grid">
+                  {% for service in service_categories %}
+                    <label class="checkbox-card">
+                      <input type="checkbox" name="service_categories" value="{{ service }}" {% if service in selected_services %}checked{% endif %}>
+                      <span>{{ service }}</span>
+                    </label>
+                  {% endfor %}
+                </div>
+              </div>
+              <div class="form-group">
+                <label>Aadhaar Image</label>
+                <input type="file" name="aadhaar_image" accept="image/*,.pdf" {% if not documents.get('aadhaar_image') %}required{% endif %}>
+              </div>
+              <div class="form-group">
+                <label>PAN Image</label>
+                <input type="file" name="pan_image" accept="image/*,.pdf" {% if not documents.get('pan_image') %}required{% endif %}>
+              </div>
+              <div class="form-group full">
+                <label>GST Certificate Image</label>
+                <input type="file" name="gst_image" accept="image/*,.pdf">
+              </div>
+            </div>
+            <div class="chip-row">
+              <button type="submit" class="form-button">{{ 'Update Details' if profile else 'Submit Verification' }}</button>
+              {% if profile %}
+                <a href="{{ url_for('professional') }}" class="mini-link">Cancel Edit</a>
+              {% endif %}
+            </div>
+          </form>
+
+          <div class="stack-form">
+            <div class="info-card">
+              <div class="profile-head">
+                <div>
+                  <h3>{{ current_user.name }}</h3>
+                  <p class="muted">{{ current_user.email }}</p>
+                </div>
+                <span class="status-pill status-{{ profile.verification_status if profile else 'pending' }}">{{ profile.verification_status|title if profile else 'Not Submitted' }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      {% else %}
+        <div class="profile-grid">
+          <div class="info-card">
+            <div class="profile-head">
+              <div>
+                <h3>{{ current_user.name }}</h3>
+                <p class="muted">{{ current_user.email }}</p>
+              </div>
+              <span class="status-pill status-{{ profile.verification_status }}">{{ profile.verification_status|title }}</span>
+            </div>
+            <div class="chip-row" style="margin-top:16px;">
+              {% for service in selected_services %}
+                <span class="service-chip">{{ service }}</span>
+              {% endfor %}
+            </div>
+            <div class="data-list">
+              <div class="data-row"><strong>Phone</strong><span>{{ profile.phone }}</span></div>
+              <div class="data-row"><strong>City</strong><span>{{ profile.city }}</span></div>
+              <div class="data-row"><strong>Experience</strong><span>{{ profile.years_experience }} years</span></div>
+              <div class="data-row"><strong>Admin Commission</strong><span>20%</span></div>
+              <div class="data-row"><strong>Documents</strong><span>{{ documents|length }} uploaded</span></div>
+            </div>
+            {% if profile.rejection_reason %}
+              <p class="flash-item flash-error" style="margin-top:14px;">{{ profile.rejection_reason }}</p>
+            {% endif %}
+            <div class="doc-list" style="margin-top:18px;">
+              {% if documents.get('aadhaar_image') %}
+                <a class="mini-link" href="{{ url_for('view_document', document_id=documents.get('aadhaar_image').id) }}" target="_blank">View Aadhaar</a>
+              {% endif %}
+              {% if documents.get('pan_image') %}
+                <a class="mini-link" href="{{ url_for('view_document', document_id=documents.get('pan_image').id) }}" target="_blank">View PAN</a>
+              {% endif %}
+              {% if documents.get('gst_image') %}
+                <a class="mini-link" href="{{ url_for('view_document', document_id=documents.get('gst_image').id) }}" target="_blank">View GST</a>
+              {% endif %}
+            </div>
+            {% if profile.verification_status != 'pending' %}
+              <div class="chip-row" style="margin-top:18px;">
+                <a href="{{ url_for('professional', edit_profile=1) }}" class="mini-link">Edit Profile</a>
+              </div>
+            {% else %}
+              <div class="closed-note">Verification submitted. Editing is paused while admin reviews your profile.</div>
+            {% endif %}
+          </div>
+        </div>
+      {% endif %}
+    </section>
+  </div>
+</body>
+</html>

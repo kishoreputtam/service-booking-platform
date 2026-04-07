@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Your Cart</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="{{url_for('static',filename='css/cart.css')}}">
+  <link rel="stylesheet" href="{{url_for('static',filename='css/style.css')}}">
+  <style>
+    body.cart-page .modal {
+      z-index: 9999;
+    }
+  </style>
+</head>
+
+<body class="cart-page" data-logged-in="{{ '1' if current_user else '0' }}" data-login-error="{{ '1' if request.args.get('login_error') else '0' }}" data-register-error="{{ '1' if request.args.get('register_error') else '0' }}" data-page-message="{{ request.args.get('message', '') }}" data-page-message-type="{{ request.args.get('message_type', 'success') }}" data-auth-url="{{ url_for('auth', next=url_for('cart'), mode='login') }}">
+
+<div class="cart-container">
+
+  <!-- HEADER -->
+  <div class="header">
+    <a href="/">←</a>
+    <h2>🛒 Your cart</h2>
+  </div>
+
+  <!-- CART CONTENT -->
+  <div id="cart-items"></div><br>
+
+  <div class="group">
+    <h3>Select A Time Slot</h3>
+    <small>Choose a day, then a period, then the exact slot.</small>
+
+    <div id="slot-days" class="slot-days"></div>
+
+    <div class="slot-periods">
+      <button type="button" class="slot-period active" data-period="morning">Morning</button>
+      <button type="button" class="slot-period" data-period="afternoon">Afternoon</button>
+      <button type="button" class="slot-period" data-period="evening">Evening</button>
+    </div>
+
+    <div id="slot-options" class="slot-options"></div>
+  </div>
+
+  <div class="group">
+    <h3>Service Address</h3>
+    <small>Pick the service location for this booking.</small>
+
+    <div class="location-wrap">
+      <input
+        id="cartLocationInput"
+        class="location-input"
+        type="text"
+        placeholder="Enter your address"
+        autocomplete="off"
+      >
+      <button type="button" class="location-btn" id="cartDetectLocationBtn">Use my location</button>
+    </div>
+
+    <input type="hidden" id="cartLocationLat">
+    <input type="hidden" id="cartLocationLng">
+    <input type="hidden" id="cartLocationPlaceId">
+    <p id="cartLocationMessage" class="helper-text"></p>
+  </div>
+
+  <div class="group">
+    <h3>Payment Option</h3>
+    <small>Choose how you want to continue.</small>
+
+    <div class="payment-options">
+      <label class="payment-choice active">
+        <input type="radio" name="payment_method" value="pay_after_service" checked>
+        <span>
+          <strong>Pay After Service</strong>
+          <small>Place order now and pay after the work is completed.</small>
+        </span>
+      </label>
+
+      <label class="payment-choice">
+        <input type="radio" name="payment_method" value="online_payment">
+        <span>
+          <strong>Online Payment</strong>
+          <small>Razorpay checkout will be connected in the next step.</small>
+        </span>
+      </label>
+    </div>
+  </div>
+
+  <p id="checkoutMessage" class="checkout-message"></p>
+
+  <form id="checkoutForm" action="{{ url_for('place_order') }}" method="POST" style="display:none;">
+    <input type="hidden" name="cart_items" id="checkoutCartItems">
+    <input type="hidden" name="address" id="checkoutAddress">
+    <input type="hidden" name="latitude" id="checkoutLatitude">
+    <input type="hidden" name="longitude" id="checkoutLongitude">
+    <input type="hidden" name="place_id" id="checkoutPlaceId">
+    <input type="hidden" name="slot_period" id="checkoutSlotPeriod">
+    <input type="hidden" name="slot_time" id="checkoutSlotTime">
+    <input type="hidden" name="payment_method" id="checkoutPaymentMethod">
+  </form>
+
+  <button class="add-btn" type="button" onclick="clearCart()">Clear Cart</button>
+</div>
+
+<!-- FOOTER -->
+<div class="footer">
+  <button class="add-btn" type="button" data-categories-url="{{ url_for('categories') }}" onclick="window.location.href=this.dataset.categoriesUrl">Add Services</button>
+
+  <div class="total">
+    <span>Total</span>
+    <h3 id="total">₹0</h3>
+  </div>
+
+  <button class="checkout" id="checkoutBtn" type="button" onclick="handleCheckoutButtonClick(event)">Checkout</button>
+</div>
+
+<div class="modal" id="modal">
+  <div class="modal-box">
+    <span class="close" onclick="closeCartAuthModal()">✖</span>
+
+    <form id="login" action="{{ url_for('login') }}" method="POST">
+      <h2>Login</h2>
+
+      <input type="hidden" name="next" value="{{ url_for('cart') }}">
+
+      {% if request.args.get('login_error') %}
+        <p class="switch" style="color:#c62828; margin-top:0; margin-bottom:12px;">{{ request.args.get('login_error') }}</p>
+      {% endif %}
+
+      <div class="input-group">
+        <input type="email" name="email" placeholder="Email" required>
+      </div>
+
+      <div class="input-group">
+        <input type="password" name="password" placeholder="Password" required>
+      </div>
+
+      <button type="submit" class="auth-btn">Login</button>
+      <p class="switch" onclick="toggleCartAuthForm()">Create account</p>
+    </form>
+
+    <form id="register" action="{{ url_for('register') }}" method="POST" style="display:none;">
+      <h2>Register</h2>
+
+      <input type="hidden" name="next" value="{{ url_for('cart') }}">
+
+      {% if request.args.get('register_error') %}
+        <p class="switch" style="color:#c62828; margin-top:0; margin-bottom:12px;">{{ request.args.get('register_error') }}</p>
+      {% endif %}
+
+      <div class="input-group">
+        <input type="text" name="name" placeholder="Name" required>
+      </div>
+
+      <div class="input-group">
+        <input type="email" name="email" placeholder="Email" required>
+      </div>
+
+      <div class="input-group">
+        <input type="password" name="password" placeholder="Password" required>
+      </div>
+
+      <div class="input-group">
+        <select name="role" required>
+          <option value="user">User</option>
+          <option value="provider">Service Professional</option>
+        </select>
+      </div>
+
+      <button type="submit" class="auth-btn">Register</button>
+      <p class="switch" onclick="toggleCartAuthForm()">Already have account?</p>
+    </form>
+  </div>
+</div>
+
+<script src="{{ url_for('static', filename='js/cart.js') }}"></script>
+{% if google_maps_api_key %}
+<script
+  src="https://maps.googleapis.com/maps/api/js?key={{ google_maps_api_key }}&libraries=places&callback=initCartLocationServices"
+  async
+  defer
+></script>
+{% endif %}
+<script>
+function handleCheckoutButtonClick(event) {
+  if (event) {
+    event.preventDefault();
+  }
+
+  if (typeof checkout === "function") {
+    checkout();
+    return false;
+  }
+
+  if (document.body && document.body.getAttribute("data-logged-in") !== "1") {
+    if (typeof openCartAuthModal === "function") {
+      openCartAuthModal();
+      return false;
+    }
+
+    var authUrl = document.body.getAttribute("data-auth-url");
+    if (authUrl) {
+      window.location.href = authUrl;
+    }
+    return false;
+  }
+
+  var messageEl = document.getElementById("checkoutMessage");
+  if (messageEl) {
+    messageEl.textContent = "Please refresh this page and try checkout again.";
+    messageEl.style.color = "#c62828";
+  }
+  return false;
+}
+</script>
+
+</body>
+</html>

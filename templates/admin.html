@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard</title>
+  <link rel="icon" href="{{ url_for('static', filename='images/HLicon.ico') }}">
+  <link href="{{ url_for('static', filename='css/basestyles.css') }}" rel="stylesheet">
+  <link href="{{ url_for('static', filename='css/dashboard.css') }}" rel="stylesheet">
+</head>
+<body class="dashboard-body">
+  <div class="dashboard-shell">
+    <div class="dashboard-topbar">
+      <a href="{{ url_for('index') }}" class="brand-link">
+        <span class="brand-badge">
+          <img src="{{ url_for('static', filename='images/iconbg.png') }}" alt="Home Lynk" class="brand-image">
+        </span>
+        <span>Admin</span>
+      </a>
+      <div class="topbar-actions">
+        <a href="{{ url_for('index') }}" class="ghost-link">Home</a>
+        <a href="{{ url_for('logout') }}" class="cta-link">Logout</a>
+      </div>
+    </div>
+
+    <section class="hero-panel">
+      <div class="hero-grid">
+        <div>
+          <span class="eyebrow">Operations Control</span>
+          <h1>Orders stay first. Verification and edits open only when you need them.</h1>
+          <p>
+            New bookings now wait for admin control by default. Use auto assignment only when you explicitly choose it,
+            otherwise keep everything under manual review.
+          </p>
+        </div>
+        <div class="subtle-box">
+          <h3>Current control rules</h3>
+          <p>New orders do not auto-assign on booking.</p>
+          <p>Auto assignment works only from admin action.</p>
+          <p>Completed items stay closed unless manually edited.</p>
+          <p>Approved professionals collapse into compact cards.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="stats-grid quick-links">
+      <a href="#professionals-section" class="dashboard-card dashboard-card-link">
+        <div class="stat-value">{{ stats.pending_verifications }}</div>
+        <div class="stat-label">Pending Verifications</div>
+      </a>
+      <a href="#professionals-section" class="dashboard-card dashboard-card-link">
+        <div class="stat-value">{{ stats.approved_professionals }}</div>
+        <div class="stat-label">Approved Professionals</div>
+      </a>
+      <a href="#orders-section" class="dashboard-card dashboard-card-link">
+        <div class="stat-value">{{ stats.total_orders }}</div>
+        <div class="stat-label">Total Orders</div>
+      </a>
+      <a href="#commission-section" class="dashboard-card dashboard-card-link">
+        <div class="stat-value">₹{{ stats.admin_revenue }}</div>
+        <div class="stat-label">Completed Commission</div>
+      </a>
+    </section>
+
+    <section class="section-card" id="orders-section">
+      <div class="section-header">
+        <div>
+          <h2>Sales Orders & Assignment Control</h2>
+          <p>Manual first. Use automatic assignment only when you want the app to pick the best matching approved professional.</p>
+        </div>
+      </div>
+
+      {% if bookings %}
+        {% set order_counts = namespace(all=0, pending=0, assigned=0, in_progress=0, completed=0) %}
+        {% for item in bookings %}
+          {% set order_counts.all = order_counts.all + 1 %}
+          {% if item.booking.work_status == 'pending' %}
+            {% set order_counts.pending = order_counts.pending + 1 %}
+          {% elif item.booking.work_status == 'assigned' %}
+            {% set order_counts.assigned = order_counts.assigned + 1 %}
+          {% elif item.booking.work_status == 'in_progress' %}
+            {% set order_counts.in_progress = order_counts.in_progress + 1 %}
+          {% elif item.booking.work_status == 'completed' %}
+            {% set order_counts.completed = order_counts.completed + 1 %}
+          {% endif %}
+        {% endfor %}
+
+        <div class="status-filter-row" id="orderFilterBar">
+          <button type="button" class="status-filter-button active" data-filter="all">All Orders ({{ order_counts.all }})</button>
+          <button type="button" class="status-filter-button" data-filter="pending">Pending ({{ order_counts.pending }})</button>
+          <button type="button" class="status-filter-button" data-filter="assigned">Assigned ({{ order_counts.assigned }})</button>
+          <button type="button" class="status-filter-button" data-filter="in_progress">In Progress ({{ order_counts.in_progress }})</button>
+          <button type="button" class="status-filter-button" data-filter="completed">Completed ({{ order_counts.completed }})</button>
+        </div>
+
+        <div class="order-grid">
+          {% for item in bookings %}
+            {% set order_edit_open = edit_order_id == item.booking.id or item.booking.work_status != 'completed' %}
+            <div class="order-card" id="order-{{ item.booking.id }}" data-order-status="{{ item.booking.work_status }}">
+              <div class="order-head">
+                <div>
+                  <h3>Order #{{ item.booking.id }}</h3>
+                  <p class="muted">{{ item.customer.name if item.customer else 'Customer' }} | {{ item.booking.service_category or 'Service Needs Review' }}</p>
+                </div>
+                <span class="status-pill status-{{ 'approved' if item.booking.work_status == 'completed' else 'pending' }}">{{ format_status_label(item.booking.work_status) }}</span>
+              </div>
+
+              <div class="data-list">
+                <div class="data-row"><strong>Customer Email</strong><span>{{ item.customer.email if item.customer else 'N/A' }}</span></div>
+                <div class="data-row"><strong>Service Summary</strong><span>{{ item.booking.service_summary }}</span></div>
+                <div class="data-row"><strong>Address</strong><span>{{ item.booking.address }}</span></div>
+                <div class="data-row"><strong>Slot</strong><span>{{ item.booking.slot }}</span></div>
+                <div class="data-row"><strong>Total Price</strong><span>₹{{ item.booking.total_price }}</span></div>
+                <div class="data-row"><strong>Admin Commission</strong><span>₹{{ item.booking.admin_commission }}</span></div>
+                <div class="data-row"><strong>Professional Payout</strong><span>₹{{ item.booking.professional_amount }}</span></div>
+                <div class="data-row"><strong>Assigned To</strong><span>{{ item.assigned_professional.name if item.assigned_professional else 'Waiting for admin decision' }}</span></div>
+                <div class="data-row"><strong>Remarks</strong><span>{{ item.booking.admin_notes or 'No remarks added yet.' }}</span></div>
+              </div>
+
+              {% if order_edit_open %}
+                <form class="order-actions compact-form" action="{{ url_for('update_admin_order', booking_id=item.booking.id) }}" method="POST">
+                  <div class="inline-fields">
+                    <div class="form-group">
+                      <label>Assignment Mode</label>
+                      <select name="assigned_professional_id">
+                        <option value="">Keep current</option>
+                        <option value="auto" {% if not item.booking.assigned_professional_id %}selected{% endif %}>Automatic match</option>
+                        {% for professional in approved_provider_choices %}
+                          <option value="{{ professional.user.id }}" {% if item.booking.assigned_professional_id == professional.user.id %}selected{% endif %}>
+                            {{ professional.user.name }} - {{ professional.services|join(', ') }}
+                          </option>
+                        {% endfor %}
+                      </select>
+                    </div>
+                    <div class="form-group">
+                      <label>Work Status</label>
+                      <select name="work_status">
+                        {% for status in ['pending', 'assigned', 'in_progress', 'completed'] %}
+                          <option value="{{ status }}" {% if item.booking.work_status == status or (not item.booking.assigned_professional_id and item.booking.work_status == 'pending' and status == 'assigned') %}selected{% endif %}>{{ format_status_label(status) }}</option>
+                        {% endfor %}
+                      </select>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label>Admin Remarks for Professional</label>
+                    <textarea name="admin_notes" placeholder="Visible on the professional dashboard.">{{ item.booking.admin_notes or '' }}</textarea>
+                  </div>
+                  {% if edit_order_id == item.booking.id and order_message and order_message_type == 'error' %}
+                    <div class="flash-item flash-error" style="margin-bottom: 14px;">
+                      {{ order_message }}
+                    </div>
+                  {% endif %}
+                  <div class="chip-row">
+                    <button type="submit" class="form-button">Update Order</button>
+                    {% if item.booking.work_status == 'completed' %}
+                      <a href="{{ url_for('admin_dashboard') }}#order-{{ item.booking.id }}" class="mini-link">Close Edit</a>
+                    {% endif %}
+                  </div>
+                </form>
+              {% else %}
+                <div class="closed-note">
+                  This order is completed and closed.
+                  <a href="{{ url_for('admin_dashboard', edit_order_id=item.booking.id) }}#order-{{ item.booking.id }}" class="inline-action">Edit order</a>
+                </div>
+              {% endif %}
+            </div>
+          {% endfor %}
+        </div>
+      {% else %}
+        <div class="empty-state">No orders have been placed yet.</div>
+      {% endif %}
+    </section>
+
+    <section class="section-card" id="commission-section">
+      <div class="section-header">
+        <div>
+          <h2>Commission & Payout Summary</h2>
+          <p>Completed work grouped by professional so admin can quickly understand service value, company commission, and provider payout share.</p>
+        </div>
+      </div>
+
+      {% if professional_payout_summary %}
+        <div class="profile-grid">
+          {% for item in professional_payout_summary %}
+            <div class="profile-card">
+              <div class="profile-head">
+                <div>
+                  <h3>{{ item.user.name }}</h3>
+                  <p class="muted">{{ item.user.email }}</p>
+                </div>
+                <span class="status-pill status-approved">{{ item.completed_orders }} Completed</span>
+              </div>
+              {% if item.services %}
+                <div class="chip-row" style="margin-top:14px;">
+                  {% for service in item.services %}
+                    <span class="service-chip">{{ service }}</span>
+                  {% endfor %}
+                </div>
+              {% endif %}
+              <div class="data-list compact-details">
+                <div class="data-row"><strong>Completed Jobs</strong><span>{{ item.completed_orders }}</span></div>
+                <div class="data-row"><strong>Service Value</strong><span>₹{{ item.gross_service_value }}</span></div>
+                <div class="data-row"><strong>Admin Commission</strong><span>₹{{ item.admin_commission }}</span></div>
+                <div class="data-row"><strong>Professional Payout</strong><span>₹{{ item.professional_payout }}</span></div>
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+      {% else %}
+        <div class="empty-state">No completed orders yet, so the commission summary will appear here after professionals finish jobs.</div>
+      {% endif %}
+    </section>
+
+    <section class="section-card" id="professionals-section">
+      <div class="section-header">
+        <div>
+          <h2>Professional Verification Queue</h2>
+          <p>Pending and rejected profiles can be acted on. Approved ones stay collapsed unless you reopen them.</p>
+        </div>
+      </div>
+
+      {% if profiles %}
+        <div class="profile-grid compact-list">
+          {% for item in profiles %}
+            {% set profile_edit_open = item.profile.verification_status != 'approved' or edit_profile_id == item.profile.id %}
+            <div class="profile-card" id="profile-{{ item.profile.id }}">
+              <div class="profile-head">
+                <div>
+                  <h3>{{ item.user.name if item.user else 'Professional' }}</h3>
+                  <p class="muted">{{ item.user.email if item.user else 'No email' }}</p>
+                </div>
+                <span class="status-pill status-{{ item.profile.verification_status }}">{{ item.profile.verification_status|title }}</span>
+              </div>
+
+              <div class="chip-row" style="margin-top:14px;">
+                {% for service in item.profile.service_categories.split(', ') %}
+                  <span class="service-chip">{{ service }}</span>
+                {% endfor %}
+              </div>
+
+              {% if profile_edit_open %}
+                <div class="data-list compact-details">
+                  <div class="data-row"><strong>Phone</strong><span>{{ item.profile.phone }}</span></div>
+                  <div class="data-row"><strong>City</strong><span>{{ item.profile.city }}</span></div>
+                  <div class="data-row"><strong>Experience</strong><span>{{ item.profile.years_experience }} years</span></div>
+                  <div class="data-row"><strong>Aadhaar</strong><span>{{ item.profile.aadhaar_number }}</span></div>
+                  <div class="data-row"><strong>PAN</strong><span>{{ item.profile.pan_number }}</span></div>
+                  <div class="data-row"><strong>GST</strong><span>{{ item.profile.gst_number or 'Not provided' }}</span></div>
+                  <div class="data-row"><strong>Bank</strong><span>{{ item.profile.bank_account_holder }} / {{ item.profile.bank_account_number }}</span></div>
+                  <div class="data-row"><strong>IFSC</strong><span>{{ item.profile.ifsc_code }}</span></div>
+                </div>
+
+                <div class="doc-list" style="margin-top:16px;">
+                  {% for document in item.documents.values() %}
+                    <a class="mini-link" href="{{ url_for('view_document', document_id=document.id) }}" target="_blank">Open {{ document.document_type.replace('_', ' ')|title }}</a>
+                  {% endfor %}
+                </div>
+
+                <form class="order-actions compact-form" action="{{ url_for('review_professional', profile_id=item.profile.id) }}" method="POST">
+                  <div class="form-group">
+                    <label>Admin Notes / Rejection Reason</label>
+                    <textarea name="rejection_reason" placeholder="Add feedback only when rejecting.">{{ item.profile.rejection_reason or '' }}</textarea>
+                  </div>
+                  {% if edit_profile_id == item.profile.id and profile_message %}
+                    <div class="flash-item flash-{{ 'error' if profile_message_type == 'error' else 'success' }}" style="margin-bottom: 14px;">
+                      {{ profile_message }}
+                    </div>
+                  {% endif %}
+                  <div class="chip-row">
+                    <button type="submit" class="form-button" name="decision" value="approve">Approve</button>
+                    <button type="submit" class="mini-button danger-button" name="decision" value="reject">Reject</button>
+                    {% if item.profile.verification_status == 'approved' %}
+                      <a href="{{ url_for('admin_dashboard') }}#profile-{{ item.profile.id }}" class="mini-link">Close</a>
+                    {% endif %}
+                  </div>
+                </form>
+              {% else %}
+                <div class="compact-meta">
+                  <span>{{ item.profile.phone }}</span>
+                  <span>{{ item.profile.city }}</span>
+                  <span>{{ item.profile.years_experience }} yrs exp</span>
+                  <span>{{ item.documents|length }} docs</span>
+                </div>
+                <div class="closed-note">
+                  Profile approved and closed.
+                  <a href="{{ url_for('admin_dashboard', edit_profile_id=item.profile.id) }}#profile-{{ item.profile.id }}" class="inline-action">Open details</a>
+                </div>
+              {% endif %}
+            </div>
+          {% endfor %}
+        </div>
+      {% else %}
+        <div class="empty-state">No professional verification requests yet.</div>
+      {% endif %}
+    </section>
+  </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      var filterBar = document.getElementById("orderFilterBar");
+      if (!filterBar) {
+        return;
+      }
+
+      var buttons = filterBar.querySelectorAll(".status-filter-button");
+      var cards = document.querySelectorAll(".order-card[data-order-status]");
+
+      function applyFilter(filterValue) {
+        var i;
+
+        for (i = 0; i < buttons.length; i++) {
+          if (buttons[i].getAttribute("data-filter") === filterValue) {
+            buttons[i].classList.add("active");
+          } else {
+            buttons[i].classList.remove("active");
+          }
+        }
+
+        for (i = 0; i < cards.length; i++) {
+          var cardStatus = cards[i].getAttribute("data-order-status");
+          if (filterValue === "all" || cardStatus === filterValue) {
+            cards[i].style.display = "";
+          } else {
+            cards[i].style.display = "none";
+          }
+        }
+      }
+
+      var i;
+      for (i = 0; i < buttons.length; i++) {
+        buttons[i].onclick = function () {
+          applyFilter(this.getAttribute("data-filter"));
+        };
+      }
+    });
+  </script>
+</body>
+</html>
